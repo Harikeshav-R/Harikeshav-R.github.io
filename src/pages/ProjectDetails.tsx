@@ -19,17 +19,24 @@ const ProjectDetails = () => {
             const fetchReadme = async () => {
                 setLoading(true);
                 try {
-                    // Extract owner and repo from github URL
-                    // URL format: https://github.com/StartHawk/LEAP
-                    const urlParts = project.github.split('/');
-                    const owner = urlParts[urlParts.length - 2];
-                    const repo = urlParts[urlParts.length - 1];
+                    // Extract owner and repo from github URL using URL API for robustness
+                    const url = new URL(project.github);
+                    const pathParts = url.pathname.split('/').filter(Boolean); // Remove empty strings
+                    // pathParts[0] is owner, pathParts[1] is repo
+                    if (pathParts.length < 2) {
+                        throw new Error("Invalid GitHub URL");
+                    }
+                    const owner = pathParts[0];
+                    const repo = pathParts[1];
+
+                    console.log(`Fetching README for ${owner}/${repo}`);
 
                     // Try main branch first
                     let response = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/main/README.md`);
 
                     // If failed, try master branch
                     if (!response.ok) {
+                        console.log("Main branch failed, trying master");
                         response = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/master/README.md`);
                     }
 
@@ -37,6 +44,7 @@ const ProjectDetails = () => {
                         const text = await response.text();
                         setReadmeContent(text);
                     } else {
+                        console.error("Failed to fetch README from both main and master");
                         setError(true);
                     }
                 } catch (err) {
@@ -54,10 +62,12 @@ const ProjectDetails = () => {
     }, [project]);
 
     if (!project) {
+        console.log("Project not found. ID:", id);
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <h2 className="text-2xl font-bold mb-4">Project not found</h2>
+                    <p className="mb-4 text-gray-500">Could not find project with ID: {id}</p>
                     <Link to="/projects" className="text-blue-500 hover:underline">Back to all projects</Link>
                 </div>
             </div>
