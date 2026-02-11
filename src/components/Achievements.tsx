@@ -3,24 +3,24 @@ import { Trophy, ExternalLink } from 'lucide-react';
 
 const achievements = [
     {
-        title: "Best Overall Hack",
-        event: "HackTheNorth 2025",
-        date: "Sep 2025",
-        description: "Built an AI-powered accessibility tool that translates sign language to speech in real-time using computer vision.",
+        title: "Third Place - Visa Track",
+        event: "TartanHacks 2026",
+        date: "Feb 2026",
+        description: "Built a gamified AI-driven personal finance assistant that simplifies expense tracking and financial goal setting through intelligent receipt analysis and interactive mascot-led insights",
         link: "#"
     },
     {
-        title: "1st Place - FinTech Track",
-        event: "ETHGlobal New York",
-        date: "Jul 2025",
-        description: "Developed a decentralized privacy-preserving identity verification protocol using zero-knowledge proofs.",
-        link: "#"
+        title: "Third Place - The Token Company Track",
+        event: "NextHacks 2026",
+        date: "Jan 2026",
+        description: "Developed a high-performance LLM context compression library utilizing a fine-tuned BERT architecture for intelligent token pruning, enabling drastic reductions in inference costs and latency while preserving accuracy across massive context windows.",
+        link: "https://devpost.com/software/distill-fnk4as"
     },
     {
-        title: "Most Innovative Solution",
-        event: "Local Hack Day",
-        date: "Mar 2025",
-        description: "Created a smart waste management system using IoT sensors and route optimization algorithms.",
+        title: "Various Wins",
+        event: "Regional Hackathons",
+        date: "June 2022 - Feb 2024",
+        description: "Participated in multiple regional hackathons and won multiple prizes.",
         link: "#"
     }
 ];
@@ -30,7 +30,7 @@ const Achievements = () => {
         <section id="achievements" className="py-20 md:py-32">
             <div className="max-w-6xl mx-auto px-6">
                 <RevealOnScroll>
-                    <h2 className="text-3xl md:text-5xl font-bold mb-16 tracking-tight">Achievements.</h2>
+                    <h2 className="text-3xl md:text-5xl font-bold mb-16 tracking-tight">Awards.</h2>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {achievements.map((achievement, index) => (
