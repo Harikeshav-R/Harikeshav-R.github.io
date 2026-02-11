@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { ArrowLeft, Github } from 'lucide-react';
+import Mermaid from '../components/Mermaid';
 import { projects } from '../data/projects';
 
 const ProjectDetails = () => {
@@ -160,7 +161,15 @@ const ProjectDetails = () => {
                                 ),
                                 code: ({ node, ...props }) => {
                                     // @ts-ignore
-                                    const inline = props.inline || !String(props.className).includes('language-');
+                                    const match = /language-(\w+)/.exec(props.className || '');
+                                    const isMermaid = match && match[1] === 'mermaid';
+                                    // @ts-ignore
+                                    const inline = props.inline || !match;
+
+                                    if (isMermaid) {
+                                        return <Mermaid chart={String(props.children).replace(/\n$/, '')} />;
+                                    }
+
                                     return inline ? (
                                         <code {...props} className="bg-black/5 dark:bg-white/10 px-1.5 py-0.5 rounded text-sm font-mono text-gray-800 dark:text-gray-200" />
                                     ) : (

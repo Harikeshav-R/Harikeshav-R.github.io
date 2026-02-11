@@ -14,10 +14,10 @@ const experiences = [
         description: "Collaborated with designers to implement pixel-perfect user interfaces. Migrated legacy codebases to modern React stacks."
     },
     {
-        company: "StartUp Ltd.",
-        role: "Junior Developer",
-        period: "2019 - 2021",
-        description: "Contributed to backend API development and database design. Assisted in testing and deployment pipelines."
+        company: "Siage Solutions Pvt. Ltd.",
+        role: "Software Engineer Intern",
+        period: "Jun 2025 - Aug 2025",
+        description: ""
     }
 ];
 
