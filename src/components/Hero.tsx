@@ -36,7 +36,7 @@ const Hero = () => {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.3, duration: 0.6 }}
-                        className="text-5xl md:text-8xl font-bold tracking-tighter mb-6 text-black dark:text-white"
+                        className="text-4xl md:text-8xl font-bold tracking-tighter mb-6 text-black dark:text-white"
                     >
                         Harikeshav R
                     </motion.h1>
