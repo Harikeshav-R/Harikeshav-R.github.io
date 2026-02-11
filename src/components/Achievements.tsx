@@ -6,15 +6,30 @@ const achievements = [
         title: "Third Place - Visa Track",
         event: "TartanHacks 2026",
         date: "Feb 2026",
-        description: "Built a gamified AI-driven personal finance assistant that simplifies expense tracking and financial goal setting through intelligent receipt analysis and interactive mascot-led insights",
+        description: "Awarded for Penny, a gamified AI-driven personal finance assistant that simplifies expense tracking and financial goal setting through intelligent receipt analysis and interactive mascot-led insights",
         link: "#"
     },
     {
         title: "Third Place - The Token Company Track",
         event: "NextHacks 2026",
         date: "Jan 2026",
-        description: "Developed a high-performance LLM context compression library utilizing a fine-tuned BERT architecture for intelligent token pruning, enabling drastic reductions in inference costs and latency while preserving accuracy across massive context windows.",
-        link: "https://devpost.com/software/distill-fnk4as"
+        description: "Awarded for Distill, a high-performance LLM context compression library utilizing a fine-tuned BERT architecture for intelligent token pruning, enabling drastic reductions in inference costs and latency while preserving accuracy across massive context windows.",
+        link: "#"
+    },
+    {
+        title: "Best AI Hack Runner Up",
+        event: "HackOHI/O 2025",
+        date: "Oct 2025",
+        description: "Awarded for LeadForge, an autonomous AI SDR platform that orchestrates lead generation and multi-channel outreach using LangGraph and Gemini.",
+        link: "#"
+    },
+
+    {
+        title: "Game Development",
+        event: "World Language Appathon",
+        date: "Dec 2025",
+        description: "Built an immersive VR market simulator to teach the player Uzbek, featuring a dynamic economy system, physics-based interactions, and AI-driven NPCs, developed for Meta Quest using Unity and the Meta XR SDK.",
+        link: "#"
     },
     {
         title: "Various Wins",
