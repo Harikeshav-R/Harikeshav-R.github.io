@@ -20,7 +20,7 @@ const achievements = [
         title: "Various Wins",
         event: "Regional Hackathons",
         date: "June 2022 - Feb 2024",
-        description: "Participated in multiple regional hackathons and won multiple prizes.\n- TISBHacks\n- KRMHacks",
+        description: "Participated in multiple regional hackathons and won multiple prizes.",
         link: "#"
     }
 ];
