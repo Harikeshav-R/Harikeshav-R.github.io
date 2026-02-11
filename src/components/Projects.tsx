@@ -39,7 +39,12 @@ const Projects = ({ limit, showViewAll, heading = "Selected Work." }: ProjectsPr
                             >
                                 <div className={`aspect-video w-full ${project.image} group-hover:scale-105 transition-transform duration-500`} />
                                 <div className="p-6">
-                                    <h3 className="text-xl font-bold mb-2 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors line-clamp-2">{project.title}</h3>
+                                    <div className="flex justify-between items-start mb-2">
+                                        <h3 className="text-xl font-bold group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors line-clamp-2">{project.title}</h3>
+                                        <span className="text-xs font-mono font-medium px-2 py-0.5 rounded-full bg-black/5 dark:bg-white/10 text-gray-500 dark:text-gray-400 shrink-0 ml-2">
+                                            {project.year}
+                                        </span>
+                                    </div>
                                     <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm leading-relaxed">{project.description}</p>
                                     <div className="flex flex-wrap gap-2 mb-4">
                                         {project.tech.map((t) => (
