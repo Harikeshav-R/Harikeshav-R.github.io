@@ -5,7 +5,7 @@ export const projects = [
         tech: ['C/C++', 'LibTorch', 'Linux Kernel', 'OpenMP', 'SIMD'],
         github: 'https://github.com/Harikeshav-R/LEAP',
         image: 'bg-gradient-to-br from-purple-900 to-slate-900',
-        year: '2024'
+        year: '2026'
     },
     {
         title: 'Distill',
@@ -13,7 +13,7 @@ export const projects = [
         tech: ['Python', 'PyTorch', 'Transformers', 'FastAPI', 'React'],
         github: 'https://github.com/Harikeshav-R/Distill',
         image: 'bg-gradient-to-br from-emerald-900 to-slate-900',
-        year: '2024'
+        year: '2026'
     },
     {
         title: 'LeadForge',
@@ -21,7 +21,7 @@ export const projects = [
         tech: ['Python', 'LangGraph', 'FastAPI', 'React', 'TypeScript'],
         github: 'https://github.com/Harikeshav-R/LeadForge',
         image: 'bg-gradient-to-br from-blue-900 to-slate-900',
-        year: '2024'
+        year: '2025'
     },
     {
         title: 'Sane Jtreet',
@@ -29,7 +29,7 @@ export const projects = [
         tech: ['Python', 'FastAPI', 'React', 'LangGraph', 'TypeScript'],
         github: 'https://github.com/Harikeshav-R/Sane-Jtreet',
         image: 'bg-gradient-to-br from-indigo-900 to-slate-900',
-        year: '2024'
+        year: '2025'
     },
     {
         title: 'Penny',
@@ -37,7 +37,7 @@ export const projects = [
         tech: ['Python', 'FastAPI', 'React', 'TypeScript', 'LangChain'],
         github: 'https://github.com/VamshiS123/penny',
         image: 'bg-gradient-to-br from-rose-900 to-slate-900',
-        year: '2023'
+        year: '2026'
     },
     {
         title: 'Spartan',
@@ -45,7 +45,7 @@ export const projects = [
         tech: ['C#', '.NET', 'MessagePack', 'Cryptography', 'Sockets'],
         github: 'https://github.com/Harikeshav-R/Spartan',
         image: 'bg-gradient-to-br from-cyan-900 to-slate-900',
-        year: '2023'
+        year: '2024'
     },
     {
         title: 'Nudgly',
@@ -53,7 +53,7 @@ export const projects = [
         tech: ['C++', 'Qt 6', 'QML', 'LLM', 'CMake'],
         github: 'https://github.com/Harikeshav-R/Nudgly',
         image: 'bg-gradient-to-br from-amber-900 to-slate-900',
-        year: '2023'
+        year: '2025'
     },
     {
         title: 'VR Appathon',
@@ -61,7 +61,7 @@ export const projects = [
         tech: ['Unity', 'C#', 'Meta XR SDK', 'URP', 'NavMesh'],
         github: 'https://github.com/Harikeshav-R/VR-Appathon',
         image: 'bg-gradient-to-br from-teal-900 to-slate-900',
-        year: '2023'
+        year: '2025'
     },
     {
         title: 'RSSI Prediction Study',
@@ -77,7 +77,7 @@ export const projects = [
         tech: ['Kotlin', 'Python', 'React', 'Constellation', 'Flask'],
         github: 'https://github.com/Harikeshav-R/DriveDataDollars',
         image: 'bg-gradient-to-br from-emerald-900 to-slate-900',
-        year: '2022'
+        year: '2024'
     },
     {
         title: 'FEH Robotics',
@@ -85,7 +85,7 @@ export const projects = [
         tech: ['C++', 'Embedded Systems', 'Robotics', 'FEH Proteus'],
         github: 'https://github.com/Harikeshav-R/FEH-Robotics',
         image: 'bg-gradient-to-br from-blue-900 to-slate-900',
-        year: '2022'
+        year: '2025'
     },
     {
         title: 'SDP Project',
@@ -93,7 +93,7 @@ export const projects = [
         tech: ['C++', 'CMake', 'OpenGL', 'Miniaudio', 'Tigr'],
         github: 'https://github.com/Harikeshav-R/SDP-Project',
         image: 'bg-gradient-to-br from-indigo-900 to-slate-900',
-        year: '2022'
+        year: '2024'
     },
     {
         title: 'Unified Healthcare Interface',
@@ -101,7 +101,7 @@ export const projects = [
         tech: ['Python', 'FastAPI', 'Rasa', 'SQLite', 'SpeechRecognition'],
         github: 'https://github.com/Harikeshav-R/Unified-Healthcare-Interface',
         image: 'bg-gradient-to-br from-rose-900 to-slate-900',
-        year: '2021'
+        year: '2023'
     },
     {
         title: 'Sign Language Translator',
@@ -109,7 +109,7 @@ export const projects = [
         tech: ['Python', 'OpenCV', 'TensorFlow', 'NLTK', 'PySide6'],
         github: 'https://github.com/Harikeshav-R/Sign-Language-Translator',
         image: 'bg-gradient-to-br from-amber-900 to-slate-900',
-        year: '2021'
+        year: '2023'
     },
     {
         title: 'Mathtrix',
@@ -117,7 +117,7 @@ export const projects = [
         tech: ['Python', 'FastAPI', 'PySide6', 'SQLite', 'Bootstrap'],
         github: 'https://github.com/Harikeshav-R/Mathtrix',
         image: 'bg-gradient-to-br from-cyan-900 to-slate-900',
-        year: '2021'
+        year: '2023'
     },
     {
         title: 'CipherVault',
@@ -125,7 +125,7 @@ export const projects = [
         tech: ['Python', 'MySQL', 'Face Recognition', 'AES-256', 'Rich'],
         github: 'https://github.com/Harikeshav-R/CipherVault',
         image: 'bg-gradient-to-br from-teal-900 to-slate-900',
-        year: '2020'
+        year: '2022'
     },
     {
         title: 'Mazdoor Sahay',
@@ -133,7 +133,7 @@ export const projects = [
         tech: ['Python', 'Flask', 'MySQL', 'Rasa'],
         github: 'https://github.com/Harikeshav-R/mazdoor-sahay/',
         image: 'bg-gradient-to-br from-purple-900 to-slate-900',
-        year: '2020'
+        year: '2021'
     },
     {
         title: 'Covid Essentials',
@@ -141,6 +141,6 @@ export const projects = [
         tech: ['Rasa', 'Python', 'TensorFlow', 'JavaScript', 'HTML5'],
         github: 'https://github.com/Harikeshav-R/covid-essentials',
         image: 'bg-gradient-to-br from-emerald-900 to-slate-900',
-        year: '2020'
+        year: '2021'
     }
 ];
