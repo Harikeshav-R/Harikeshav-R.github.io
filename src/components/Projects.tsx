@@ -30,8 +30,10 @@ const Projects = ({ limit, showViewAll, heading = "Selected Work." }: ProjectsPr
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                         {displayedProjects.map((project, index) => (
-                            <Link
-                                to={`/project/${project.title.toLowerCase().replace(/\s+/g, '-')}`}
+                            <a
+                                href={project.github}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 key={index}
                                 className="glass group relative overflow-hidden rounded-xl bg-black/5 dark:bg-white/5 hover:-translate-y-2 transition-all duration-300 hover:shadow-lg dark:hover:shadow-white/5 block"
                             >
@@ -48,11 +50,11 @@ const Projects = ({ limit, showViewAll, heading = "Selected Work." }: ProjectsPr
                                     </div>
                                     <div className="flex gap-4">
                                         <div className="flex items-center gap-2 text-sm font-medium text-black dark:text-white group-hover:underline transition-colors">
-                                            <ArrowRight className="w-4 h-4" /> View Details
+                                            <ArrowRight className="w-4 h-4" /> View on GitHub
                                         </div>
                                     </div>
                                 </div>
-                            </Link>
+                            </a>
                         ))}
                     </div>
 

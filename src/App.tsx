@@ -2,7 +2,6 @@ import Navbar from './components/Navbar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import AllProjects from './pages/AllProjects';
-import ProjectDetails from './pages/ProjectDetails';
 import './index.css';
 
 function App() {
@@ -13,7 +12,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/projects" element={<AllProjects />} />
-          <Route path="/project/:id" element={<ProjectDetails />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -2,22 +2,16 @@ import { RevealOnScroll } from './RevealOnScroll';
 
 const experiences = [
     {
-        company: "Tech Corp Inc.",
-        role: "Senior Full Stack Developer",
-        period: "2023 - Present",
-        description: "Leading the development of scalable web applications using React and Node.js. Architected microservices and improved system performance by 40%."
+        company: "Pfizer",
+        role: "Apprenticeship",
+        period: "Jan 2026 - Present",
+        description: "Engineered an end-to-end AI document intelligence pipeline that leverages multi-engine OCR, automated classification, and advanced RAG workflows to transform unstructured pharmaceutical and mortgage records into an interactive, queryable system."
     },
     {
-        company: "Creative Studio",
-        role: "Frontend Developer",
-        period: "2021 - 2023",
-        description: "Collaborated with designers to implement pixel-perfect user interfaces. Migrated legacy codebases to modern React stacks."
-    },
-    {
-        company: "Siage Solutions Pvt. Ltd.",
+        company: "Siage Solutions",
         role: "Software Engineer Intern",
         period: "Jun 2025 - Aug 2025",
-        description: ""
+        description: "Developed comprehensive AI solutions including a private, offline RAG system for secure document retrieval, an ML-powered ticketing agent for automated issue sorting, and a customer sentiment analysis pipeline that converts raw feedback into actionable visual insights."
     }
 ];
 
