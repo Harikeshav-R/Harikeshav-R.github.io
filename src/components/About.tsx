@@ -11,7 +11,7 @@ const About = () => {
                     <div className="grid md:grid-cols-[1.5fr_1fr] gap-12 items-center mb-16">
                         <div className="text-gray-600 dark:text-gray-400 leading-relaxed text-lg space-y-6">
                             <p>
-                                I've been coding since I was 10 years old. While I never had a knack for traditional artistic pursuits, I found that building software and hardware was the best way for me to express myself creatively.
+                                I've been coding since I was 10 years old. I started by copying code from YouTube tutorials word for word, and eventually picked up the skills to build my own projects. While I never had a knack for traditional artistic pursuits, I found that building software and hardware was the best way for me to express myself creatively.
                             </p>
                             <p>
                                 In a world where performance is often taken for granted and "AI slop" is shipped all too frequently, I am driven to create systems that are smart, secure, high-performance, and efficient.
@@ -76,7 +76,7 @@ const About = () => {
                                 <div>
                                     <h4 className="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-500">Stack</h4>
                                     <div className="flex flex-wrap gap-2">
-                                        {['C++', 'Python', 'TypeScript', 'React', 'FastAPI', 'C#', 'Next.js'].map((tech) => (
+                                        {['C++', 'Python', 'LangChain/LangGraph', 'FastAPI', 'C#', '.NET'].map((tech) => (
                                             <span
                                                 key={tech}
                                                 className="px-3 py-1 bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-black/10 dark:hover:bg-white/10 transition-colors cursor-default"
@@ -90,7 +90,7 @@ const About = () => {
                                 <div>
                                     <h4 className="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-500">Tools</h4>
                                     <div className="flex flex-wrap gap-2">
-                                        {['CMake', 'Qt', 'Git', 'Postman', 'VS Code'].map((tech) => (
+                                        {['Git', 'CMake', 'Postman', 'JetBrains IDEs'].map((tech) => (
                                             <span
                                                 key={tech}
                                                 className="px-3 py-1 bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-black/10 dark:hover:bg-white/10 transition-colors cursor-default"

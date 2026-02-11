@@ -8,7 +8,7 @@ const AllProjects = () => {
 
     return (
         <main className="pt-20">
-            <Projects />
+            <Projects heading="All my projects" />
         </main>
     );
 };

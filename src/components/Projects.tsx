@@ -6,9 +6,10 @@ import { Link } from 'react-router-dom';
 interface ProjectsProps {
     limit?: number;
     showViewAll?: boolean;
+    heading?: string;
 }
 
-const Projects = ({ limit, showViewAll }: ProjectsProps) => {
+const Projects = ({ limit, showViewAll, heading = "Selected Work." }: ProjectsProps) => {
     const displayedProjects = limit ? projects.slice(0, limit) : projects;
 
     return (
@@ -16,7 +17,7 @@ const Projects = ({ limit, showViewAll }: ProjectsProps) => {
             <div className="max-w-6xl mx-auto px-6">
                 <RevealOnScroll>
                     <div className="flex justify-between items-end mb-16">
-                        <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Selected Work.</h2>
+                        <h2 className="text-3xl md:text-5xl font-bold tracking-tight">{heading}</h2>
                         {showViewAll && (
                             <Link
                                 to="/projects"
