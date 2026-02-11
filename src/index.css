@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    @apply bg-white text-black;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        @apply bg-black text-white;
+    }
+}
+
+@layer utilities {
+    .glass {
+        @apply backdrop-blur-xl bg-white/10 dark:bg-black/10 border border-black/5 dark:border-white/10;
+    }
+}
