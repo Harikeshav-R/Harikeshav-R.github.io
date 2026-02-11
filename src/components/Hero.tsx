@@ -80,7 +80,7 @@ const Hero = () => {
                     </a>
 
                     <a
-                        href="/resume.pdf"
+                        href="/Resume.pdf"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="group px-8 py-3 bg-black text-white dark:bg-white dark:text-black font-medium rounded-full flex items-center gap-2 hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1"
