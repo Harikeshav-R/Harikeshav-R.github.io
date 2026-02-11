@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { ArrowLeft, Github } from 'lucide-react';
 import { projects } from '../data/projects';
 
@@ -128,25 +129,65 @@ const ProjectDetails = () => {
                         </div>
                     ) : (
                         <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
                             components={{
+                                h1: ({ node, ...props }) => (
+                                    <h1 {...props} className="text-3xl font-bold pb-2 border-b border-gray-200 dark:border-gray-800 mb-6 mt-8 first:mt-0" />
+                                ),
+                                h2: ({ node, ...props }) => (
+                                    <h2 {...props} className="text-2xl font-semibold pb-2 border-b border-gray-200 dark:border-gray-800 mb-4 mt-8" />
+                                ),
+                                h3: ({ node, ...props }) => (
+                                    <h3 {...props} className="text-xl font-semibold mb-3 mt-6" />
+                                ),
+                                p: ({ node, ...props }) => (
+                                    <p {...props} className="mb-4 leading-7 text-gray-700 dark:text-gray-300" />
+                                ),
+                                ul: ({ node, ...props }) => (
+                                    <ul {...props} className="list-disc list-inside mb-4 space-y-1 text-gray-700 dark:text-gray-300 ml-4" />
+                                ),
+                                ol: ({ node, ...props }) => (
+                                    <ol {...props} className="list-decimal list-inside mb-4 space-y-1 text-gray-700 dark:text-gray-300 ml-4" />
+                                ),
+                                li: ({ node, ...props }) => (
+                                    <li {...props} className="pl-1" />
+                                ),
+                                a: ({ node, ...props }) => (
+                                    <a {...props} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline break-words font-medium" />
+                                ),
+                                blockquote: ({ node, ...props }) => (
+                                    <blockquote {...props} className="border-l-4 border-gray-200 dark:border-gray-700 pl-4 py-1 my-4 text-gray-500 italic" />
+                                ),
+                                code: ({ node, ...props }) => {
+                                    // @ts-ignore
+                                    const inline = props.inline || !String(props.className).includes('language-');
+                                    return inline ? (
+                                        <code {...props} className="bg-black/5 dark:bg-white/10 px-1.5 py-0.5 rounded text-sm font-mono text-gray-800 dark:text-gray-200" />
+                                    ) : (
+                                        <code {...props} className="block bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto border border-black/5 dark:border-white/10 text-sm font-mono leading-relaxed" />
+                                    );
+                                },
+                                pre: ({ node, ...props }) => (
+                                    <pre {...props} className="bg-transparent p-0 mb-4 rounded-lg overflow-hidden" />
+                                ),
                                 img: ({ node, ...props }) => (
                                     <img
                                         {...props}
-                                        className="rounded-xl shadow-lg border border-black/5 dark:border-white/5 mb-8"
+                                        className="rounded-xl shadow-lg border border-black/5 dark:border-white/5 mb-8 max-w-full h-auto"
                                         alt={props.alt || ''}
                                     />
                                 ),
-                                a: ({ node, ...props }) => (
-                                    <a {...props} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline break-words" />
-                                ),
-                                pre: ({ node, ...props }) => (
-                                    <div className="relative group">
-                                        <pre {...props} className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto border border-black/5 dark:border-white/10" />
+                                table: ({ node, ...props }) => (
+                                    <div className="overflow-x-auto mb-6 rounded-lg border border-gray-200 dark:border-gray-800">
+                                        <table {...props} className="w-full text-left text-sm" />
                                     </div>
                                 ),
-                                code: ({ node, ...props }) => (
-                                    <code {...props} className="bg-black/5 dark:bg-white/10 px-1.5 py-0.5 rounded text-sm font-mono text-pink-600 dark:text-pink-400" />
-                                )
+                                th: ({ node, ...props }) => (
+                                    <th {...props} className="bg-gray-50 dark:bg-gray-900/50 p-3 font-semibold border-b border-gray-200 dark:border-gray-800" />
+                                ),
+                                td: ({ node, ...props }) => (
+                                    <td {...props} className="p-3 border-b border-gray-100 dark:border-gray-800/50 last:border-0" />
+                                ),
                             }}
                         >
                             {readmeContent}
