@@ -12,6 +12,12 @@ const experiences = [
         role: "Software Engineer Intern",
         period: "Jun 2025 - Aug 2025",
         description: "Developed comprehensive AI solutions including a private, offline RAG system for secure document retrieval, an ML-powered ticketing agent for automated issue sorting, and a customer sentiment analysis pipeline that converts raw feedback into actionable visual insights."
+    },
+    {
+        company: "Indian Institute of Technology, Madras",
+        role: "Research Intern",
+        period: "Jun 2023 - Oct 2023",
+        description: "Engineered machine learning algorithms to model electromagnetic wave propagation in closed environments, utilizing experimental data to predict and visualize signal intensity. Authored a research paper on optimizing indoor wireless deployment by analyzing generated propagation heat maps."
     }
 ];
 
