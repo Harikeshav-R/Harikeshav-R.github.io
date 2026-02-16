@@ -35,7 +35,7 @@ export const projects = [
         title: 'Penny',
         description: 'A gamified AI-driven personal finance assistant that simplifies expense tracking and financial goal setting through intelligent receipt analysis and interactive mascot-led insights.',
         tech: ['Python', 'FastAPI', 'React', 'TypeScript', 'LangChain'],
-        github: 'https://github.com/VamshiS123/penny',
+        github: 'https://github.com/Harikeshav-R/Penny',
         image: 'bg-gradient-to-br from-rose-900 to-slate-900',
         year: '2026'
     },
