@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, MapPin } from 'lucide-react';
+import { ArrowRight, MapPin, GraduationCap } from 'lucide-react';
 
 const Hero = () => {
     return (
@@ -52,10 +52,17 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4, duration: 0.5 }}
-                        className="flex items-center justify-center gap-2 mb-8 text-gray-500 dark:text-gray-400"
+                        className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6 mb-8 text-gray-500 dark:text-gray-400"
                     >
-                        <MapPin className="w-5 h-5" />
-                        <span className="text-lg md:text-xl">Columbus, OH</span>
+                        <div className="flex items-center gap-2">
+                            <MapPin className="w-5 h-5" />
+                            <span className="text-lg md:text-xl">Columbus, OH</span>
+                        </div>
+                        <div className="hidden md:block w-1.5 h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full" />
+                        <div className="flex items-center gap-2">
+                            <GraduationCap className="w-5 h-5" />
+                            <span className="text-lg md:text-xl">The Ohio State University</span>
+                        </div>
                     </motion.div>
                 </motion.div>
 

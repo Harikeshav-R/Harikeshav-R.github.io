@@ -11,7 +11,7 @@ const About = () => {
                     <div className="grid md:grid-cols-[1.5fr_1fr] gap-12 items-center mb-16">
                         <div className="text-gray-600 dark:text-gray-400 leading-relaxed text-lg space-y-6">
                             <p>
-                                I've been coding since I was 10 years old. I started by copying code from YouTube tutorials word for word, and eventually picked up the skills to build my own projects. While I never had a knack for traditional artistic pursuits, I found that building software and hardware was the best way for me to express myself creatively.
+                                I'm currently a student at The Ohio State University. I've been coding since I was 10 years old. I started by copying code from YouTube tutorials word for word, and eventually picked up the skills to build my own projects. While I never had a knack for traditional artistic pursuits, I found that building software and hardware was the best way for me to express myself creatively.
                             </p>
                             <p>
                                 In a world where performance is often taken for granted and "AI slop" is shipped all too frequently, I am driven to create systems that are smart, secure, high-performance, and efficient.
