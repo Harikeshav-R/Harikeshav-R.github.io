@@ -1,5 +1,13 @@
 export const projects = [
     {
+        title: 'Pulse',
+        description: 'An AI-driven clinical trial monitoring platform that integrates conversational symptom journaling, passive wearable health data with statistical anomaly detection, and a centralized researcher dashboard for real-time risk scoring and safety triage.',
+        tech: ['Python', 'FastAPI', 'React', 'React Native', 'LangChain'],
+        github: 'https://github.com/Harikeshav-R/Pulse',
+        image: 'bg-gradient-to-br from-red-900 to-slate-900',
+        year: '2026'
+    },
+    {
         title: 'LEAP',
         description: 'A custom, high-performance, distributed LLM inference engine in C++20 that pipelines transformer models across heterogeneous clusters using a ring topology and zero-copy Linux kernel networking.',
         tech: ['C/C++', 'LibTorch', 'Linux Kernel', 'OpenMP', 'SIMD'],
