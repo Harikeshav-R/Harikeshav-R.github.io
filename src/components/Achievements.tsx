@@ -5,9 +5,9 @@ const achievements = [
     {
         title: "Second Place - Medpace Track",
         event: "RevolutionUC 2026",
-        date: "Feb 2026",
+        date: "March 2026",
         description: "Awarded for Pulse, An AI-powered clinical trial safety platform integrating conversational symptom journaling, wearable health monitoring, and real-time researcher dashboards.",
-        link: "https://github.com/Harikeshav-R/Pulse"
+        link: "#"
     },
     {
         title: "Third Place - Visa Track",
