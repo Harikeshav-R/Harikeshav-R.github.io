@@ -59,7 +59,9 @@ function FeaturedCard({ project }: { project: Project }) {
         </div>
       )}
 
-      <p className="line-clamp-3 text-sm text-subtext1">{project.description}</p>
+      <p className="text-sm leading-relaxed text-subtext1">
+        {project.description}
+      </p>
 
       {/* bottom-aligned meta */}
       <div className="mt-auto flex flex-col gap-3 pt-1">
