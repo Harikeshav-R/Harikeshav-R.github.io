@@ -47,8 +47,9 @@ command palette, and statusline automatically.
 ## Deploy
 
 Deployed to [harikeshav.me](https://harikeshav.me) via GitHub Pages
-(`public/CNAME`).
+(custom domain from `public/CNAME`).
 
-```bash
-pnpm deploy      # builds and pushes dist/ to gh-pages
-```
+Deployment is automated: every push to `main` triggers
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), which builds
+the site and publishes it to GitHub Pages. No manual step is required — you can
+also trigger a deploy manually from the repo's **Actions** tab.
