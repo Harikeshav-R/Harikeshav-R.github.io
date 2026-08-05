@@ -1,16 +1,46 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1e1e2e" />
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/jpeg" href="/Headshot.jpg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Harikeshav R</title>
-</head>
+    <title>Harikeshav Rameshkumar — Systems & AI Engineer</title>
+    <meta
+      name="description"
+      content="Harikeshav Rameshkumar — B.S. Computer Science @ The Ohio State University. Systems and AI/LLM engineer. GE Aerospace, Siage Solutions, IIT Madras. Builder of distributed inference engines, FHE ML runtimes, and agentic AI platforms."
+    />
+    <meta name="author" content="Harikeshav Rameshkumar" />
 
-<body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
-</body>
+    <!-- Open Graph / social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Harikeshav Rameshkumar — Systems & AI Engineer" />
+    <meta
+      property="og:description"
+      content="Systems and AI/LLM engineer. OSU CS. Building distributed inference engines, FHE ML runtimes, and agentic AI platforms."
+    />
+    <meta property="og:url" content="https://harikeshav.me" />
+    <meta name="twitter:card" content="summary" />
 
+    <script>
+      // Apply saved theme before paint to avoid a flash.
+      (function () {
+        try {
+          var t = localStorage.getItem("hk-theme");
+          var root = document.documentElement;
+          if (t === "light") {
+            root.classList.remove("dark");
+            root.classList.add("light");
+          } else {
+            root.classList.add("dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
