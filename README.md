@@ -1,73 +1,54 @@
-# React + TypeScript + Vite
+# harikeshav.me
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+My personal site — a Neovim-themed portfolio. Built from scratch with React + Vite +
+Tailwind, styled after [Neovim](https://neovim.io/) and the
+[Catppuccin](https://github.com/catppuccin/catppuccin) colorscheme.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Neovim chrome** — neo-tree file sidebar, buffer tabs, a Lualine-style statusline,
+  and which-key hints.
+- **Telescope command palette** — fuzzy-find any section, project, or link
+  (`Ctrl/Cmd+P` or `/`).
+- **Vim-ish keybinds** — `g1`–`g6` to jump between sections, `t` to toggle theme.
+- **Catppuccin Mocha (dark) ⇄ Latte (light)** with a live theme swap.
+- **Live ASCII headshot** — the portrait is rendered to ASCII art client-side on a
+  canvas.
+- **alpha-nvim splash** on first load, `prefers-reduced-motion` respected throughout.
 
-## React Compiler
+## Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React 19 · TypeScript · Vite 7 · Tailwind CSS v4 · Framer Motion · lucide-react ·
+JetBrains Mono
 
-## Expanding the ESLint configuration
+## Develop
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+pnpm install
+pnpm dev        # dev server
+pnpm build      # typecheck + production build → dist/
+pnpm preview    # serve the production build
+pnpm lint       # eslint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```
+src/
+  components/           # nvim chrome (Sidebar, BufferTabs, StatusLine, CommandPalette, …)
+    sections/           # About, Experience, Projects, Skills, Awards, Contact
+  data/                 # content: profile, experience, projects, awards (+ types)
+  lib/                  # sections model, theme + scroll-spy hooks, helpers
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+All site content lives in `src/data/` — editing those files updates the sidebar tree,
+command palette, and statusline automatically.
+
+## Deploy
+
+Deployed to [harikeshav.me](https://harikeshav.me) via GitHub Pages
+(`public/CNAME`).
+
+```bash
+pnpm deploy      # builds and pushes dist/ to gh-pages
 ```

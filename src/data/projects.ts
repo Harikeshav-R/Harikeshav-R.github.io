@@ -1,154 +1,310 @@
-export const projects = [
-    {
-        title: 'Pulse',
-        description: 'An AI-driven clinical trial monitoring platform that integrates conversational symptom journaling, passive wearable health data with statistical anomaly detection, and a centralized researcher dashboard for real-time risk scoring and safety triage.',
-        tech: ['Python', 'FastAPI', 'React', 'React Native', 'LangChain'],
-        github: 'https://github.com/Harikeshav-R/Pulse',
-        image: 'bg-gradient-to-br from-red-900 to-slate-900',
-        year: '2026'
-    },
-    {
-        title: 'LEAP',
-        description: 'A custom, high-performance, distributed LLM inference engine in C++20 that pipelines transformer models across heterogeneous clusters using a ring topology and zero-copy Linux kernel networking.',
-        tech: ['C/C++', 'LibTorch', 'Linux Kernel', 'OpenMP', 'SIMD'],
-        github: 'https://github.com/Harikeshav-R/LEAP',
-        image: 'bg-gradient-to-br from-purple-900 to-slate-900',
-        year: '2026'
-    },
-    {
-        title: 'Distill',
-        description: 'A high-performance LLM context compression library utilizing a fine-tuned BERT architecture for intelligent token pruning, enabling drastic reductions in inference costs and latency while preserving accuracy across massive context windows.',
-        tech: ['Python', 'PyTorch', 'Transformers', 'FastAPI', 'React'],
-        github: 'https://github.com/Harikeshav-R/Distill',
-        image: 'bg-gradient-to-br from-emerald-900 to-slate-900',
-        year: '2026'
-    },
-    {
-        title: 'LeadForge',
-        description: 'An end-to-end agentic sales automation ecosystem that orchestrates autonomous AI workflows for lead discovery, AI-generated personalized landing pages, and automated multi-channel outreach via voice and email.',
-        tech: ['Python', 'LangGraph', 'FastAPI', 'React', 'TypeScript'],
-        github: 'https://github.com/Harikeshav-R/LeadForge',
-        image: 'bg-gradient-to-br from-blue-900 to-slate-900',
-        year: '2025'
-    },
-    {
-        title: 'Sane Jtreet',
-        description: 'An AI-driven multi-agent research platform that automates financial market analysis, sentiment tracking, and risk-managed trading strategies using LangGraph and FastAPI.',
-        tech: ['Python', 'FastAPI', 'React', 'LangGraph', 'TypeScript'],
-        github: 'https://github.com/Harikeshav-R/Sane-Jtreet',
-        image: 'bg-gradient-to-br from-indigo-900 to-slate-900',
-        year: '2025'
-    },
-    {
-        title: 'Penny',
-        description: 'A gamified AI-driven personal finance assistant that simplifies expense tracking and financial goal setting through intelligent receipt analysis and interactive mascot-led insights.',
-        tech: ['Python', 'FastAPI', 'React', 'TypeScript', 'LangChain'],
-        github: 'https://github.com/Harikeshav-R/Penny',
-        image: 'bg-gradient-to-br from-rose-900 to-slate-900',
-        year: '2026'
-    },
-    {
-        title: 'Spartan',
-        description: 'A modular and secure remote C2 framework built in C# and .NET, featuring dynamic payload delivery, X3DH key exchange, and end-to-end encrypted communication via a double-ratchet mechanism.',
-        tech: ['C#', '.NET', 'MessagePack', 'Cryptography', 'Sockets'],
-        github: 'https://github.com/Harikeshav-R/Spartan',
-        image: 'bg-gradient-to-br from-cyan-900 to-slate-900',
-        year: '2024'
-    },
-    {
-        title: 'Nudgly',
-        description: 'A privacy-centric, cross-platform AI assistant that provides real-time, context-aware assistance by analyzing on-screen content using Large Language Models and a robust C++/Qt architecture.',
-        tech: ['C++', 'Qt 6', 'QML', 'LLM', 'CMake'],
-        github: 'https://github.com/Harikeshav-R/Nudgly',
-        image: 'bg-gradient-to-br from-amber-900 to-slate-900',
-        year: '2025'
-    },
-    {
-        title: 'VR Appathon',
-        description: 'An immersive VR market simulator featuring a dynamic economy system, physics-based interactions, and AI-driven NPCs, developed for Meta Quest using Unity and the Meta XR SDK.',
-        tech: ['Unity', 'C#', 'Meta XR SDK', 'URP', 'NavMesh'],
-        github: 'https://github.com/Harikeshav-R/VR-Appathon',
-        image: 'bg-gradient-to-br from-teal-900 to-slate-900',
-        year: '2025'
-    },
-    {
-        title: 'RSSI Prediction Study',
-        description: 'A comprehensive machine learning framework for simulating synthetic indoor signal strength datasets and predicting RSSI values across diverse room geometries using empirical path loss models and deep learning architectures.',
-        tech: ['Python', 'TensorFlow', 'Scikit-learn', 'Pandas', 'Matplotlib'],
-        github: 'https://github.com/Harikeshav-R/RSSI-Prediction',
-        image: 'bg-gradient-to-br from-purple-900 to-slate-900',
-        year: '2023'
-    },
-    {
-        title: 'DriveDataDollars',
-        description: 'A decentralized data collection platform that incentivizes users to contribute dashcam-style imagery and GPS coordinates to a verifiable network powered by the Constellation Metagraph.',
-        tech: ['Kotlin', 'Python', 'React', 'Constellation', 'Flask'],
-        github: 'https://github.com/Harikeshav-R/DriveDataDollars',
-        image: 'bg-gradient-to-br from-emerald-900 to-slate-900',
-        year: '2024'
-    },
-    {
-        title: 'FEH Robotics',
-        description: 'A comprehensive C++ robotics platform for an autonomous competition robot featuring precise encoder-based movement, real-time sensor integration, and multi-task navigation logic.',
-        tech: ['C++', 'Embedded Systems', 'Robotics', 'FEH Proteus'],
-        github: 'https://github.com/Harikeshav-R/FEH-Robotics',
-        image: 'bg-gradient-to-br from-blue-900 to-slate-900',
-        year: '2025'
-    },
-    {
-        title: 'SDP Project',
-        description: 'A high-performance C++20 rhythm game featuring dynamic difficulty scaling, music-synchronized gameplay, and persistent performance tracking.',
-        tech: ['C++', 'CMake', 'OpenGL', 'Miniaudio', 'Tigr'],
-        github: 'https://github.com/Harikeshav-R/SDP-Project',
-        image: 'bg-gradient-to-br from-indigo-900 to-slate-900',
-        year: '2024'
-    },
-    {
-        title: 'Unified Healthcare Interface',
-        description: 'A voice-enabled healthcare management ecosystem integrating a FastAPI backend and a Rasa virtual assistant to centralize medical records, track appointments, and provide emergency support through a natural language interface.',
-        tech: ['Python', 'FastAPI', 'Rasa', 'SQLite', 'SpeechRecognition'],
-        github: 'https://github.com/Harikeshav-R/Unified-Healthcare-Interface',
-        image: 'bg-gradient-to-br from-rose-900 to-slate-900',
-        year: '2023'
-    },
-    {
-        title: 'Sign Language Translator',
-        description: 'A real-time bidirectional translator enabling seamless communication between the hearing-impaired and the public through deep learning-based gesture recognition and NLP-driven sign language synthesis.',
-        tech: ['Python', 'OpenCV', 'TensorFlow', 'NLTK', 'PySide6'],
-        github: 'https://github.com/Harikeshav-R/Sign-Language-Translator',
-        image: 'bg-gradient-to-br from-amber-900 to-slate-900',
-        year: '2023'
-    },
-    {
-        title: 'Mathtrix',
-        description: 'A comprehensive event management ecosystem featuring a FastAPI backend, a PySide6 administrative suite, and automated registration workflows for seamless event orchestration.',
-        tech: ['Python', 'FastAPI', 'PySide6', 'SQLite', 'Bootstrap'],
-        github: 'https://github.com/Harikeshav-R/Mathtrix',
-        image: 'bg-gradient-to-br from-cyan-900 to-slate-900',
-        year: '2023'
-    },
-    {
-        title: 'CipherVault',
-        description: 'A multi-layered CLI password manager featuring biometric face recognition, email OTP, and AES-256 encrypted storage.',
-        tech: ['Python', 'MySQL', 'Face Recognition', 'AES-256', 'Rich'],
-        github: 'https://github.com/Harikeshav-R/CipherVault',
-        image: 'bg-gradient-to-br from-teal-900 to-slate-900',
-        year: '2022'
-    },
-    {
-        title: 'Mazdoor Sahay',
-        description: 'A web platform connecting migrant labourers with contractors through geolocation-based job matching, featuring community support forums and an AI chatbot for economic inclusion.',
-        tech: ['Python', 'Flask', 'MySQL', 'Rasa'],
-        github: 'https://github.com/Harikeshav-R/mazdoor-sahay/',
-        image: 'bg-gradient-to-br from-purple-900 to-slate-900',
-        year: '2021'
-    },
-    {
-        title: 'Covid Essentials',
-        description: 'An integrated COVID-19 information platform for India featuring real-time statistical tracking, health news integration, and a Rasa-powered AI chatbot for vaccination center discovery.',
-        tech: ['Rasa', 'Python', 'TensorFlow', 'JavaScript', 'HTML5'],
-        github: 'https://github.com/Harikeshav-R/covid-essentials',
-        image: 'bg-gradient-to-br from-emerald-900 to-slate-900',
-        year: '2021'
-    }
+import type { Project } from "./types";
+
+// Featured 6 first (order matters for display), then the rest.
+export const projects: Project[] = [
+  {
+    id: "pulse",
+    slug: "pulse",
+    name: "Pulse",
+    tagline: "Event-driven clinical-trial patient safety platform",
+    ext: "py",
+    featured: true,
+    award: "2nd Place — Medpace Track, RevolutionUC 2026",
+    description:
+      "An AI-powered clinical-trial safety platform that bridges the gap between in-person visits. Combines real-time biometric anomaly detection, multi-agent voice/text check-ins, and researcher triage — normalizing symptoms into MedDRA terms and CTCAE severity grades with a human in the loop.",
+    stats: [
+      { value: "1–5", label: "CTCAE auto-grading" },
+      { value: "0–100", label: "live risk scoring" },
+    ],
+    tech: [
+      "LangGraph",
+      "Gemini Live",
+      "LiveKit",
+      "FastAPI",
+      "Redis Pub/Sub",
+      "PostgreSQL",
+      "React Native",
+      "NumPy/SciPy",
+    ],
+  },
+  {
+    id: "penny",
+    slug: "penny",
+    name: "Penny",
+    tagline: "AI financial twin & real-time shopping companion",
+    ext: "py",
+    featured: true,
+    award: "3rd Place — Visa Track, TartanHacks 2026",
+    description:
+      "A personal-finance platform with a multimodal receipt-OCR pipeline (GPT-4o Vision), a pgvector-backed spending memory, and a Chrome extension that computes the 'true cost' of a purchase in hours-of-work while you shop.",
+    stats: [
+      { value: "GPT-4o", label: "vision receipt OCR" },
+      { value: "MV3", label: "browser companion" },
+    ],
+    tech: [
+      "FastAPI",
+      "PostgreSQL 17",
+      "pgvector",
+      "LangChain",
+      "OpenAI GPT-4o",
+      "React 18",
+      "Chrome MV3",
+    ],
+  },
+  {
+    id: "distill",
+    slug: "distill",
+    name: "Distill",
+    tagline: "Intelligent LLM context-compression engine",
+    ext: "py",
+    featured: true,
+    award: "3rd Place — The Token Company Track, NextHacks 2026",
+    description:
+      "A high-performance LLM input-compression framework. A fine-tuned BERT token classifier scores every token by semantic necessity, then a two-tier pruning engine (context + token level) cuts prompt size while a zero-hallucination constraint engine preserves code and structure.",
+    stats: [
+      { value: "68%", label: "token reduction" },
+      { value: "~1.3%", label: "accuracy loss" },
+    ],
+    tech: [
+      "PyTorch",
+      "BERT",
+      "Hugging Face",
+      "tiktoken",
+      "FastAPI",
+      "React 19",
+      "Chrome MV3",
+    ],
+  },
+  {
+    id: "leap",
+    slug: "leap",
+    name: "LEAP",
+    tagline: "Distributed LLM inference engine in C++20",
+    ext: "cpp",
+    featured: true,
+    description:
+      "A distributed LLM inference engine that runs models like Llama 3 70B across a ring of heterogeneous consumer devices using pipeline parallelism — bypassing the VRAM wall. Hand-written AVX2/NEON SIMD kernels, a zero-copy Linux kernel-module transport, and a custom INT8/FP32 weight serializer.",
+    stats: [
+      { value: "4×", label: "smaller footprint (INT8)" },
+      { value: "0-copy", label: "kernel transport" },
+    ],
+    tech: [
+      "C++20",
+      "AVX2 / NEON",
+      "OpenMP",
+      "Linux kernel module",
+      "LibTorch",
+      "CMake",
+    ],
+  },
+  {
+    id: "penumbra-fhe",
+    slug: "penumbra-fhe",
+    name: "Penumbra-FHE",
+    tagline: "Encrypted ML inference engine (Rust + Python)",
+    ext: "rs",
+    featured: true,
+    description:
+      "A privacy-preserving ML inference library that runs PyTorch / sklearn / XGBoost models under Fully Homomorphic Encryption — inputs and outputs never leave ciphertext. A 'narrow-waist' 3-layer architecture lowers ONNX graphs to a versioned IR executed on tfhe-rs primitives, with a PyO3 bridge and bit-for-bit exactness guarantees.",
+    stats: [
+      { value: "8 ops", label: "hand-mapped to tfhe-rs" },
+      { value: "0-trust", label: "encrypted end-to-end" },
+    ],
+    tech: [
+      "Rust",
+      "tfhe-rs",
+      "PyO3",
+      "ONNX",
+      "PyTorch",
+      "Rayon",
+      "Python 3.12",
+    ],
+  },
+  {
+    id: "leadforge",
+    slug: "leadforge",
+    name: "LeadForge",
+    tagline: "Autonomous agentic AI SDR platform",
+    ext: "py",
+    featured: true,
+    award: "Best AI Hack Runner-Up — HackOHI/O 2025",
+    description:
+      "An end-to-end agentic sales-development platform. Multi-agent workflows discover leads, run multimodal visual audits of their sites (Gemini Vision + Playwright), auto-generate improved website prototypes, and reach out over cold email and real-time bi-directional AI voice calls.",
+    stats: [
+      { value: "multi-agent", label: "LangGraph orchestration" },
+      { value: "real-time", label: "AI voice calls" },
+    ],
+    tech: [
+      "LangGraph",
+      "Gemini 2.0",
+      "Playwright",
+      "Pipecat / Twilio",
+      "FastAPI",
+      "PostgreSQL",
+      "React 19",
+    ],
+  },
+
+  // ---- Non-featured ----
+  {
+    id: "sane-jtreet",
+    slug: "sane-jtreet",
+    name: "Sane-Jtreet",
+    tagline: "Multi-agent quantitative trading research platform",
+    ext: "py",
+    featured: false,
+    description:
+      "An autonomous multi-agent quant-research platform modeled on a hedge-fund desk: bull/bear analyst agents debate theses over live market data, a research manager moderates, and a multi-persona risk committee approves trades. ChromaDB gives agents long-term situational memory.",
+    stats: [],
+    tech: ["LangGraph", "ChromaDB", "FastAPI", "PostgreSQL", "Backtrader", "React 19"],
+  },
+  {
+    id: "spartan",
+    slug: "spartan",
+    name: "Spartan",
+    tagline: "Stealth .NET 9 C2 framework (security research)",
+    ext: "cs",
+    featured: false,
+    description:
+      "A security-research command-and-control framework in .NET 9 exploring modern post-exploitation and secure-channel design: reflective in-memory assembly loading, an X3DH + Double Ratchet encrypted protocol with forward secrecy, and a length-prefixed MessagePack transport over raw TCP.",
+    stats: [],
+    tech: ["C# / .NET 9", "X3DH", "Double Ratchet", "AES-256", "MessagePack", "TCP"],
+  },
+  {
+    id: "drivedatadollars",
+    slug: "drive-data-dollars",
+    name: "DriveDataDollars",
+    tagline: "Decentralized spatial imagery & telemetry (DePIN)",
+    ext: "kt",
+    featured: false,
+    award: "Honda Challenge Winner — HackOHI/O",
+    description:
+      "A decentralized, incentivized mapping network. An Android edge client captures dashcam imagery + GPS telemetry, signs each payload with ECDSA (secp256k1), and commits verified data to a Constellation Network metagraph — with a React/Leaflet explorer over the spatial data.",
+    stats: [],
+    tech: ["Kotlin", "Jetpack Compose", "ECDSA", "Constellation Metagraph", "Flask", "React 18"],
+  },
+  {
+    id: "ciphervault",
+    slug: "cipher-vault",
+    name: "CipherVault",
+    tagline: "Zero-trust biometric credential vault",
+    ext: "py",
+    featured: false,
+    description:
+      "An enterprise zero-trust terminal password vault with a 3-tier auth chain: bcrypt master secret, live facial biometric verification (OpenCV + dlib 128-d embeddings), and SMTP OTP fallback. Credentials are AES-256-CBC encrypted with per-entry IVs.",
+    stats: [],
+    tech: ["Python 3.12", "AES-256", "bcrypt", "OpenCV / dlib", "MySQL", "Rich CLI"],
+  },
+  {
+    id: "sdp-rhythm",
+    slug: "sdp-rhythm-engine",
+    name: "SDP Rhythm Engine",
+    tagline: "Cross-platform C++20 rhythm game engine",
+    ext: "cpp",
+    featured: false,
+    description:
+      "A from-scratch 2D rhythm game engine in C++20 with a custom rendering pipeline, low-latency multi-track audio (Miniaudio), an explicit finite state machine across 7+ screens, and binary stats serialization — running on macOS, Windows, Linux, and ARM Cortex-M.",
+    stats: [],
+    tech: ["C++20", "OpenGL / Tigr", "Miniaudio", "CMake", "FSM"],
+  },
+  {
+    id: "sign-language",
+    slug: "sign-language-translator",
+    name: "Sign Language Translator",
+    tagline: "Bi-directional ISL accessibility platform",
+    ext: "py",
+    featured: false,
+    description:
+      "A bi-directional Indian Sign Language translator. Speech-to-sign transforms English (SVO) into ISL gloss (SOV) grammar via NLTK and maps to gesture clips; sign-to-speech isolates hands with OpenCV and classifies gestures with a Keras CNN, then speaks them aloud.",
+    stats: [],
+    tech: ["TensorFlow / Keras", "OpenCV", "NLTK", "PySide6", "pyttsx3"],
+  },
+  {
+    id: "vr-market",
+    slug: "vr-market-simulator",
+    name: "VR Market Simulator",
+    tagline: "Dynamic VR economic engine & crowd AI",
+    ext: "cs",
+    featured: false,
+    award: "Game Dev Track Winner — World Language Appathon (Meta)",
+    description:
+      "An immersive Meta Quest language-learning sim built in Unity. A dynamic economic engine randomizes pricing to test budgeting in Uzbek Som, with spatial hand-tracking physics, spatial-audio price cues, and a NavMesh-driven autonomous NPC crowd.",
+    stats: [],
+    tech: ["Unity", "C#", "Meta XR SDK", "NavMesh", "URP"],
+  },
+  {
+    id: "rssi-prediction",
+    slug: "rssi-prediction",
+    name: "RSSI Prediction",
+    tagline: "ML wireless signal prediction & heatmaps",
+    ext: "py",
+    featured: false,
+    description:
+      "A spatial wireless-signal framework that models and visualizes indoor RSSI without physical site surveys. Fuses log-distance path-loss with ray-tracing to synthesize data, benchmarks 6 ML/DL models (GPR wins at R²=0.975), and renders 2D coverage heatmaps.",
+    stats: [],
+    tech: ["Python 3.11", "Scikit-Learn", "TensorFlow", "NumPy", "Matplotlib"],
+  },
+  {
+    id: "mathtrix",
+    slug: "mathtrix",
+    name: "Mathtrix",
+    tagline: "Distributed event management platform",
+    ext: "py",
+    featured: false,
+    description:
+      "A full-stack event-management ecosystem for large academic symposia: async FastAPI microservices with webhook ingestion, a PySide6 admin suite with bulk QR-ticket generation, and a native Android app for live QR credential check-in.",
+    stats: [],
+    tech: ["FastAPI", "SQLAlchemy", "PySide6", "Android", "QR / Pillow"],
+  },
+  {
+    id: "uhi",
+    slug: "unified-healthcare-interface",
+    name: "Unified Healthcare Interface",
+    tagline: "Voice-first personal health record platform",
+    ext: "py",
+    featured: false,
+    description:
+      "A hands-free voice-first health-record system. Speech recognition + TTS drive a Rasa NLU engine that parses medical intents (prescriptions, vaccinations, allergies, billing) against a FastAPI + SQLAlchemy backend, with OpenStreetMap facility search and emergency alerts.",
+    stats: [],
+    tech: ["Rasa", "SpeechRecognition", "pyttsx3", "FastAPI", "SQLAlchemy"],
+  },
+  {
+    id: "mazdoor-sahay",
+    slug: "mazdoor-sahay",
+    name: "Mazdoor Sahay",
+    tagline: "Geospatial job marketplace for migrant workers",
+    ext: "py",
+    featured: false,
+    description:
+      "A socio-economic inclusion platform (UN SDG 10) matching unorganized/migrant workers to nearby jobs via Haversine proximity search, with a Rasa chatbot so low-literacy users can search and apply by voice or text. Flask backend with worker, contractor, and admin portals.",
+    stats: [],
+    tech: ["Flask", "Rasa", "MySQL", "Haversine", "jQuery / AJAX"],
+  },
+  {
+    id: "covid-essentials",
+    slug: "covid-essentials",
+    name: "Covid-Essentials",
+    tagline: "Conversational AI healthcare dashboard",
+    ext: "py",
+    featured: false,
+    description:
+      "A real-time COVID-19 information platform pairing a live analytics dashboard (30+ Indian states) with a Rasa conversational chatbot that finds vaccination slots by PIN code via the MyGov API and returns regional trends, news, and map directions.",
+    stats: [],
+    tech: ["Rasa", "TensorFlow", "WebSockets", "MyGov API", "JavaScript"],
+  },
+  {
+    id: "feh-robotics",
+    slug: "feh-robotics",
+    name: "FEH Robotics",
+    tagline: "Embedded C++ autonomous robot control",
+    ext: "cpp",
+    featured: false,
+    description:
+      "Object-oriented C++ control software for an autonomous robot on an ARM Cortex-M microcontroller (OSU FEH competition): closed-loop odometry with quadrature encoders + PID, dynamic battery-voltage compensation, multi-sensor line following, and servo LERP actuation.",
+    stats: [],
+    tech: ["C++", "ARM Cortex-M", "PID control", "Quadrature encoders", "Bare-metal I/O"],
+  },
 ];
+
+export const featuredProjects = projects.filter((p) => p.featured);
+export const otherProjects = projects.filter((p) => !p.featured);
