@@ -23,6 +23,7 @@ export const projects: Project[] = [
       "LibTorch",
       "CMake",
     ],
+    link: "https://github.com/Harikeshav-R/LEAP",
   },
   {
     id: "penumbra-fhe",
@@ -46,6 +47,7 @@ export const projects: Project[] = [
       "Rayon",
       "Python 3.12",
     ],
+    link: "https://github.com/Harikeshav-R/Penumbra-FHE",
   },
   {
     id: "distill",
@@ -70,6 +72,7 @@ export const projects: Project[] = [
       "React 19",
       "Chrome MV3",
     ],
+    link: "https://github.com/Harikeshav-R/Distill",
   },
   {
     id: "arbos",
@@ -93,6 +96,7 @@ export const projects: Project[] = [
       "FastAPI",
       "React 19",
     ],
+    link: "https://github.com/Harikeshav-R/Arb-OS",
   },
   {
     id: "atlas",
@@ -116,6 +120,7 @@ export const projects: Project[] = [
       "WeasyPrint",
       "APScheduler",
     ],
+    link: "https://github.com/Harikeshav-R/Atlas",
   },
   {
     id: "pulse",
@@ -141,6 +146,7 @@ export const projects: Project[] = [
       "React Native",
       "NumPy/SciPy",
     ],
+    link: "https://github.com/Harikeshav-R/Pulse",
   },
   {
     id: "penny",
@@ -165,6 +171,7 @@ export const projects: Project[] = [
       "React 18",
       "Chrome MV3",
     ],
+    link: "https://github.com/Harikeshav-R/Penny",
   },
   {
     id: "leadforge",
@@ -189,6 +196,7 @@ export const projects: Project[] = [
       "PostgreSQL",
       "React 19",
     ],
+    link: "https://github.com/Harikeshav-R/LeadForge",
   },
   {
     id: "sane-jtreet",
@@ -204,6 +212,7 @@ export const projects: Project[] = [
       { value: "Bull vs Bear", label: "adversarial debate" },
     ],
     tech: ["LangGraph", "ChromaDB", "FastAPI", "PostgreSQL", "Backtrader", "React 19"],
+    link: "https://github.com/Harikeshav-R/Sane-Jtreet",
   },
   {
     id: "spartan",
@@ -219,6 +228,7 @@ export const projects: Project[] = [
       { value: "forward-secret", label: "X3DH + Double Ratchet" },
     ],
     tech: ["C# / .NET 9", "X3DH", "Double Ratchet", "AES-256", "MessagePack", "TCP"],
+    link: "https://github.com/Harikeshav-R/Spartan",
   },
 
   // ---- Non-featured ----
@@ -241,6 +251,7 @@ export const projects: Project[] = [
       "Twilio Voice",
       "React 19",
     ],
+    link: "https://github.com/Harikeshav-R/Sprout",
   },
   {
     id: "drivedatadollars",
@@ -254,6 +265,7 @@ export const projects: Project[] = [
       "A decentralized, incentivized mapping network. An Android edge client captures dashcam imagery + GPS telemetry, signs each payload with ECDSA (secp256k1), and commits verified data to a Constellation Network metagraph — with a React/Leaflet explorer over the spatial data.",
     stats: [],
     tech: ["Kotlin", "Jetpack Compose", "ECDSA", "Constellation Metagraph", "Flask", "React 18"],
+    link: "https://github.com/Harikeshav-R/DriveDataDollars",
   },
   {
     id: "ciphervault",
@@ -266,6 +278,7 @@ export const projects: Project[] = [
       "An enterprise zero-trust terminal password vault with a 3-tier auth chain: bcrypt master secret, live facial biometric verification (OpenCV + dlib 128-d embeddings), and SMTP OTP fallback. Credentials are AES-256-CBC encrypted with per-entry IVs.",
     stats: [],
     tech: ["Python 3.12", "AES-256", "bcrypt", "OpenCV / dlib", "MySQL", "Rich CLI"],
+    link: "https://github.com/Harikeshav-R/CipherVault",
   },
   {
     id: "sdp-rhythm",
@@ -278,6 +291,7 @@ export const projects: Project[] = [
       "A from-scratch 2D rhythm game engine in C++20 with a custom rendering pipeline, low-latency multi-track audio (Miniaudio), an explicit finite state machine across 7+ screens, and binary stats serialization — running on macOS, Windows, Linux, and ARM Cortex-M.",
     stats: [],
     tech: ["C++20", "OpenGL / Tigr", "Miniaudio", "CMake", "FSM"],
+    link: "https://github.com/Harikeshav-R/SDP-Project",
   },
   {
     id: "sign-language",
@@ -290,6 +304,7 @@ export const projects: Project[] = [
       "A bi-directional Indian Sign Language translator. Speech-to-sign transforms English (SVO) into ISL gloss (SOV) grammar via NLTK and maps to gesture clips; sign-to-speech isolates hands with OpenCV and classifies gestures with a Keras CNN, then speaks them aloud.",
     stats: [],
     tech: ["TensorFlow / Keras", "OpenCV", "NLTK", "PySide6", "pyttsx3"],
+    link: "https://github.com/Harikeshav-R/Sign-Language-Translator",
   },
   {
     id: "vr-market",
@@ -303,6 +318,7 @@ export const projects: Project[] = [
       "An immersive Meta Quest language-learning sim built in Unity. A dynamic economic engine randomizes pricing to test budgeting in Uzbek Som, with spatial hand-tracking physics, spatial-audio price cues, and a NavMesh-driven autonomous NPC crowd.",
     stats: [],
     tech: ["Unity", "C#", "Meta XR SDK", "NavMesh", "URP"],
+    link: "https://github.com/Harikeshav-R/VR-Appathon",
   },
   {
     id: "rssi-prediction",
@@ -315,6 +331,7 @@ export const projects: Project[] = [
       "A spatial wireless-signal framework that models and visualizes indoor RSSI without physical site surveys. Fuses log-distance path-loss with ray-tracing to synthesize data, benchmarks 6 ML/DL models (GPR wins at R²=0.975), and renders 2D coverage heatmaps.",
     stats: [],
     tech: ["Python 3.11", "Scikit-Learn", "TensorFlow", "NumPy", "Matplotlib"],
+    link: "https://github.com/Harikeshav-R/RSSI-Prediction",
   },
   {
     id: "mathtrix",
@@ -327,6 +344,7 @@ export const projects: Project[] = [
       "A full-stack event-management ecosystem for large academic symposia: async FastAPI microservices with webhook ingestion, a PySide6 admin suite with bulk QR-ticket generation, and a native Android app for live QR credential check-in.",
     stats: [],
     tech: ["FastAPI", "SQLAlchemy", "PySide6", "Android", "QR / Pillow"],
+    link: "https://github.com/Harikeshav-R/Mathtrix",
   },
   {
     id: "uhi",
@@ -339,6 +357,7 @@ export const projects: Project[] = [
       "A hands-free voice-first health-record system. Speech recognition + TTS drive a Rasa NLU engine that parses medical intents (prescriptions, vaccinations, allergies, billing) against a FastAPI + SQLAlchemy backend, with OpenStreetMap facility search and emergency alerts.",
     stats: [],
     tech: ["Rasa", "SpeechRecognition", "pyttsx3", "FastAPI", "SQLAlchemy"],
+    link: "https://github.com/Harikeshav-R/Unified-Healthcare-Interface",
   },
   {
     id: "mazdoor-sahay",
@@ -351,6 +370,7 @@ export const projects: Project[] = [
       "A socio-economic inclusion platform (UN SDG 10) matching unorganized/migrant workers to nearby jobs via Haversine proximity search, with a Rasa chatbot so low-literacy users can search and apply by voice or text. Flask backend with worker, contractor, and admin portals.",
     stats: [],
     tech: ["Flask", "Rasa", "MySQL", "Haversine", "jQuery / AJAX"],
+    link: "https://github.com/Harikeshav-R/mazdoor-sahay",
   },
   {
     id: "covid-essentials",
@@ -363,6 +383,7 @@ export const projects: Project[] = [
       "A real-time COVID-19 information platform pairing a live analytics dashboard (30+ Indian states) with a Rasa conversational chatbot that finds vaccination slots by PIN code via the MyGov API and returns regional trends, news, and map directions.",
     stats: [],
     tech: ["Rasa", "TensorFlow", "WebSockets", "MyGov API", "JavaScript"],
+    link: "https://github.com/Harikeshav-R/covid-essentials",
   },
   {
     id: "feh-robotics",
@@ -375,6 +396,7 @@ export const projects: Project[] = [
       "Object-oriented C++ control software for an autonomous robot on an ARM Cortex-M microcontroller (OSU FEH competition): closed-loop odometry with quadrature encoders + PID, dynamic battery-voltage compensation, multi-sensor line following, and servo LERP actuation.",
     stats: [],
     tech: ["C++", "ARM Cortex-M", "PID control", "Quadrature encoders", "Bare-metal I/O"],
+    link: "https://github.com/Harikeshav-R/FEH-Robotics",
   },
 ];
 
