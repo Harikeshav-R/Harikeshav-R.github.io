@@ -190,6 +190,26 @@ export const projects: Project[] = [
     ],
   },
   {
+    id: "atlas",
+    slug: "atlas",
+    name: "Atlas",
+    tagline: "Local-first, terminal-native AI job-application co-pilot",
+    ext: "py",
+    featured: false,
+    description:
+      "A local-first job-application co-pilot that discovers matching roles from ATS boards and aggregators, AI-scores each for fit with an explainable rationale, and tailors a one-page resume and grounded cover letter per posting from a single master resume — tracked through a validated state machine across a Textual TUI, a Typer CLI, and an APScheduler daemon over one shared SQLite (WAL) database. A pluggable 'bring-your-own-AI' layer unifies coding-CLI backends and 100+ hosted models via LiteLLM, with truth-anchored tailoring that guards against fabrication and never lets user data leave the machine.",
+    stats: [],
+    tech: [
+      "Python 3.13",
+      "Textual TUI",
+      "Typer",
+      "LiteLLM",
+      "SQLModel / SQLite",
+      "WeasyPrint",
+      "APScheduler",
+    ],
+  },
+  {
     id: "sane-jtreet",
     slug: "sane-jtreet",
     name: "Sane-Jtreet",
