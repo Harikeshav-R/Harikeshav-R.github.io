@@ -1,6 +1,6 @@
 import type { Project } from "./types";
 
-// Featured 6 first (order matters for display), then the rest.
+// Featured first (order matters for display), then the rest.
 export const projects: Project[] = [
   {
     id: "leap",
@@ -48,6 +48,30 @@ export const projects: Project[] = [
     ],
   },
   {
+    id: "distill",
+    slug: "distill",
+    name: "Distill",
+    tagline: "Intelligent LLM context-compression engine",
+    ext: "py",
+    featured: true,
+    award: "3rd Place — The Token Company Track, NextHacks 2026",
+    description:
+      "A high-performance LLM input-compression framework. A fine-tuned BERT token classifier scores every token by semantic necessity, then a two-tier pruning engine (context + token level) cuts prompt size while a zero-hallucination constraint engine preserves code and structure.",
+    stats: [
+      { value: "68%", label: "token reduction" },
+      { value: "~1.3%", label: "accuracy loss" },
+    ],
+    tech: [
+      "PyTorch",
+      "BERT",
+      "Hugging Face",
+      "tiktoken",
+      "FastAPI",
+      "React 19",
+      "Chrome MV3",
+    ],
+  },
+  {
     id: "arbos",
     slug: "arbos",
     name: "ArbOS",
@@ -68,6 +92,29 @@ export const projects: Project[] = [
       "Polygon PoS",
       "FastAPI",
       "React 19",
+    ],
+  },
+  {
+    id: "atlas",
+    slug: "atlas",
+    name: "Atlas",
+    tagline: "Local-first, terminal-native AI job-application co-pilot",
+    ext: "py",
+    featured: true,
+    description:
+      "A local-first job-application co-pilot that discovers matching roles from ATS boards and aggregators, AI-scores each for fit with an explainable rationale, and tailors a one-page resume and grounded cover letter per posting from a single master resume — tracked through a validated state machine across a Textual TUI, a Typer CLI, and an APScheduler daemon over one shared SQLite (WAL) database. A pluggable 'bring-your-own-AI' layer unifies coding-CLI backends and 100+ hosted models via LiteLLM, with truth-anchored tailoring that guards against fabrication and never lets user data leave the machine.",
+    stats: [
+      { value: "100%", label: "line + branch coverage" },
+      { value: "9-cell", label: "OS × Python CI matrix" },
+    ],
+    tech: [
+      "Python 3.13",
+      "Textual TUI",
+      "Typer",
+      "LiteLLM",
+      "SQLModel / SQLite",
+      "WeasyPrint",
+      "APScheduler",
     ],
   },
   {
@@ -96,26 +143,26 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "distill",
-    slug: "distill",
-    name: "Distill",
-    tagline: "Intelligent LLM context-compression engine",
+    id: "penny",
+    slug: "penny",
+    name: "Penny",
+    tagline: "AI financial twin & real-time shopping companion",
     ext: "py",
     featured: true,
-    award: "3rd Place — The Token Company Track, NextHacks 2026",
+    award: "3rd Place — Visa Track, TartanHacks 2026",
     description:
-      "A high-performance LLM input-compression framework. A fine-tuned BERT token classifier scores every token by semantic necessity, then a two-tier pruning engine (context + token level) cuts prompt size while a zero-hallucination constraint engine preserves code and structure.",
+      "A personal-finance platform with a multimodal receipt-OCR pipeline (GPT-4o Vision), a pgvector-backed spending memory, and a Chrome extension that computes the 'true cost' of a purchase in hours-of-work while you shop.",
     stats: [
-      { value: "68%", label: "token reduction" },
-      { value: "~1.3%", label: "accuracy loss" },
+      { value: "GPT-4o", label: "vision receipt OCR" },
+      { value: "MV3", label: "browser companion" },
     ],
     tech: [
-      "PyTorch",
-      "BERT",
-      "Hugging Face",
-      "tiktoken",
       "FastAPI",
-      "React 19",
+      "PostgreSQL 17",
+      "pgvector",
+      "LangChain",
+      "OpenAI GPT-4o",
+      "React 18",
       "Chrome MV3",
     ],
   },
@@ -143,32 +190,38 @@ export const projects: Project[] = [
       "React 19",
     ],
   },
+  {
+    id: "sane-jtreet",
+    slug: "sane-jtreet",
+    name: "Sane-Jtreet",
+    tagline: "Multi-agent quantitative trading research platform",
+    ext: "py",
+    featured: true,
+    description:
+      "An autonomous multi-agent quant-research platform modeled on a hedge-fund desk: bull/bear analyst agents debate theses over live market data, a research manager moderates, and a multi-persona risk committee approves trades. ChromaDB gives agents long-term situational memory.",
+    stats: [
+      { value: "5-phase", label: "research → risk pipeline" },
+      { value: "Bull vs Bear", label: "adversarial debate" },
+    ],
+    tech: ["LangGraph", "ChromaDB", "FastAPI", "PostgreSQL", "Backtrader", "React 19"],
+  },
+  {
+    id: "spartan",
+    slug: "spartan",
+    name: "Spartan",
+    tagline: "Stealth .NET 9 C2 framework (security research)",
+    ext: "cs",
+    featured: true,
+    description:
+      "A security-research command-and-control framework in .NET 9 exploring modern post-exploitation and secure-channel design: reflective in-memory assembly loading, an X3DH + Double Ratchet encrypted protocol with forward secrecy, and a length-prefixed MessagePack transport over raw TCP.",
+    stats: [
+      { value: "in-memory", label: "disk-less execution" },
+      { value: "forward-secret", label: "X3DH + Double Ratchet" },
+    ],
+    tech: ["C# / .NET 9", "X3DH", "Double Ratchet", "AES-256", "MessagePack", "TCP"],
+  },
 
   // ---- Non-featured ----
-  {
-    id: "penny",
-    slug: "penny",
-    name: "Penny",
-    tagline: "AI financial twin & real-time shopping companion",
-    ext: "py",
-    featured: false,
-    award: "3rd Place — Visa Track, TartanHacks 2026",
-    description:
-      "A personal-finance platform with a multimodal receipt-OCR pipeline (GPT-4o Vision), a pgvector-backed spending memory, and a Chrome extension that computes the 'true cost' of a purchase in hours-of-work while you shop.",
-    stats: [
-      { value: "GPT-4o", label: "vision receipt OCR" },
-      { value: "MV3", label: "browser companion" },
-    ],
-    tech: [
-      "FastAPI",
-      "PostgreSQL 17",
-      "pgvector",
-      "LangChain",
-      "OpenAI GPT-4o",
-      "React 18",
-      "Chrome MV3",
-    ],
-  },
   {
     id: "sprout",
     slug: "sprout",
@@ -188,50 +241,6 @@ export const projects: Project[] = [
       "Twilio Voice",
       "React 19",
     ],
-  },
-  {
-    id: "atlas",
-    slug: "atlas",
-    name: "Atlas",
-    tagline: "Local-first, terminal-native AI job-application co-pilot",
-    ext: "py",
-    featured: false,
-    description:
-      "A local-first job-application co-pilot that discovers matching roles from ATS boards and aggregators, AI-scores each for fit with an explainable rationale, and tailors a one-page resume and grounded cover letter per posting from a single master resume — tracked through a validated state machine across a Textual TUI, a Typer CLI, and an APScheduler daemon over one shared SQLite (WAL) database. A pluggable 'bring-your-own-AI' layer unifies coding-CLI backends and 100+ hosted models via LiteLLM, with truth-anchored tailoring that guards against fabrication and never lets user data leave the machine.",
-    stats: [],
-    tech: [
-      "Python 3.13",
-      "Textual TUI",
-      "Typer",
-      "LiteLLM",
-      "SQLModel / SQLite",
-      "WeasyPrint",
-      "APScheduler",
-    ],
-  },
-  {
-    id: "sane-jtreet",
-    slug: "sane-jtreet",
-    name: "Sane-Jtreet",
-    tagline: "Multi-agent quantitative trading research platform",
-    ext: "py",
-    featured: false,
-    description:
-      "An autonomous multi-agent quant-research platform modeled on a hedge-fund desk: bull/bear analyst agents debate theses over live market data, a research manager moderates, and a multi-persona risk committee approves trades. ChromaDB gives agents long-term situational memory.",
-    stats: [],
-    tech: ["LangGraph", "ChromaDB", "FastAPI", "PostgreSQL", "Backtrader", "React 19"],
-  },
-  {
-    id: "spartan",
-    slug: "spartan",
-    name: "Spartan",
-    tagline: "Stealth .NET 9 C2 framework (security research)",
-    ext: "cs",
-    featured: false,
-    description:
-      "A security-research command-and-control framework in .NET 9 exploring modern post-exploitation and secure-channel design: reflective in-memory assembly loading, an X3DH + Double Ratchet encrypted protocol with forward secrecy, and a length-prefixed MessagePack transport over raw TCP.",
-    stats: [],
-    tech: ["C# / .NET 9", "X3DH", "Double Ratchet", "AES-256", "MessagePack", "TCP"],
   },
   {
     id: "drivedatadollars",
