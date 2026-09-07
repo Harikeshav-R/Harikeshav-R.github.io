@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local-only reference material (personal résumé source notes; not for publishing)
+/Resume/
