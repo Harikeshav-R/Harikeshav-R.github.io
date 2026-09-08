@@ -25,3 +25,4 @@ dist-ssr
 
 # Local-only reference material (personal résumé source notes; not for publishing)
 /Resume/
+.playwright-mcp/

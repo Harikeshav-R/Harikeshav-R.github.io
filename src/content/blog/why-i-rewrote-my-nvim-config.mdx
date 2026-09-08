@@ -1,0 +1,55 @@
+---
+title: "Why I Rewrote My Nvim Config"
+description: "A 2,000-line init.lua I could no longer explain, and what replaced it."
+date: "2026-05-02"
+tags: ["neovim", "lua", "tooling"]
+draft: false
+---
+
+My `init.lua` had grown to just over two thousand lines. I could not have told
+you what half of it did. Every plugin I had ever been curious about was still
+in there, disabled by a commented-out line I was afraid to delete.
+
+## The rule I gave myself
+
+One rule: **every line has to earn its place.** If I could not explain what a
+setting did and why I wanted it, it did not survive the rewrite.
+
+That killed about sixty percent of the config immediately.
+
+## Structure
+
+The old config was one file. The new one is a directory where each module owns
+exactly one concern:
+
+```lua
+-- lua/config/lazy.lua
+require("lazy").setup({
+  spec = { { import = "plugins" } },
+  defaults = { lazy = true },
+  install = { colorscheme = { "catppuccin" } },
+  checker = { enabled = false },
+})
+```
+
+Each plugin gets its own file under `lua/plugins/`, returning a spec table.
+Adding a plugin is creating a file. Removing one is deleting a file. There is
+no central list to keep in sync, which is where the old config rotted.
+
+## What I actually kept
+
+- `telescope.nvim` — the only fuzzy finder I have never wanted to replace.
+- `nvim-treesitter` — worth it for `textobjects` alone.
+- `neo-tree.nvim` — I use it perhaps once a day, and that once matters.
+- `lualine.nvim` — mostly for the mode indicator.
+- `catppuccin` — mocha at night, latte when the sun is out.
+
+## What I dropped
+
+Every completion plugin except one. Every "productivity" plugin I had installed
+after reading a blog post and never opened again. Three separate git integrations.
+
+The result is around four hundred lines, and I can explain all of them. Startup
+went from 180ms to 41ms, which was not the point, but I will take it.
+
+> The best config is the one you can delete from confidently.

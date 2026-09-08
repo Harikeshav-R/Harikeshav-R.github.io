@@ -21,7 +21,7 @@ export interface VimCursorState {
 
 interface Options {
   enabled: boolean;
-  /** Jump to section N (1-based) — used by the `g{1-6}` leader sequence. */
+  /** Jump to section N (1-based) — used by the `g{1-9}` leader sequence. */
   onGotoSection: (n: number) => void;
 }
 
@@ -244,7 +244,7 @@ export function useVimCursor(
           jumpTo("first");
           return;
         }
-        if (/^[1-6]$/.test(e.key)) {
+        if (/^[1-9]$/.test(e.key)) {
           clearLeader();
           e.preventDefault();
           onGotoSection(Number(e.key));

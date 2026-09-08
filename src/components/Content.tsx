@@ -3,6 +3,7 @@ import ExperienceSection from "@/components/sections/Experience";
 import ProjectsSection from "@/components/sections/Projects";
 import Skills from "@/components/sections/Skills";
 import Awards from "@/components/sections/Awards";
+import Blog from "@/components/sections/Blog";
 import Contact from "@/components/sections/Contact";
 
 /**
@@ -18,6 +19,7 @@ export default function Content({ onGoto }: { onGoto: (id: string) => void }) {
       <ProjectsSection />
       <Skills />
       <Awards />
+      <Blog />
       <Contact />
 
       <footer className="border-t border-surface0 pt-6 pb-4 text-center text-xs text-overlay0">

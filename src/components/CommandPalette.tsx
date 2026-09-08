@@ -7,14 +7,17 @@ import {
   FolderGit2,
   Palette,
   ExternalLink,
+  Newspaper,
 } from "lucide-react";
 import { SECTIONS } from "@/lib/sections";
+import { posts } from "@/lib/posts";
+import { useRouter } from "@/lib/routerContext";
 import { projects } from "@/data/projects";
 import { socials } from "@/data/profile";
 import type { Theme } from "@/lib/useTheme";
 import { cn } from "@/lib/cn";
 
-type Kind = "section" | "project" | "action" | "link";
+type Kind = "section" | "project" | "post" | "action" | "link";
 
 interface Item {
   id: string;
@@ -52,6 +55,7 @@ function Icon({ kind }: { kind: Kind }) {
   const cls = "h-4 w-4 shrink-0";
   if (kind === "project") return <FolderGit2 className={cn(cls, "text-blue")} />;
   if (kind === "action") return <Palette className={cn(cls, "text-peach")} />;
+  if (kind === "post") return <Newspaper className={cn(cls, "text-mauve")} />;
   if (kind === "link") return <ExternalLink className={cn(cls, "text-teal")} />;
   return <FileText className={cn(cls, "text-sky")} />;
 }
@@ -62,6 +66,7 @@ export default function CommandPalette({
   theme,
   onToggleTheme,
 }: Props) {
+  const { navigate } = useRouter();
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -82,6 +87,18 @@ export default function CommandPalette({
       kind: "project",
       run: () => onGoto("projects"),
     }));
+    // Tags ride along in `hint`, so the existing fuzzy match finds posts by
+    // tag ("rust") with no extra filtering code.
+    const entries: Item[] = posts.map((p) => ({
+      id: `post:${p.meta.slug}`,
+      label: p.meta.title,
+      hint: [p.meta.file, ...p.meta.tags.map((t) => `#${t}`)].join(" "),
+      kind: "post",
+      run: () => {
+        navigate(`/blog/${p.meta.slug}`);
+        onClose();
+      },
+    }));
     const links: Item[] = socials.map((s) => ({
       id: `link:${s.label}`,
       label: s.label,
@@ -98,8 +115,8 @@ export default function CommandPalette({
         run: onToggleTheme,
       },
     ];
-    return [...sections, ...projs, ...actions, ...links];
-  }, [onGoto, onToggleTheme, theme]);
+    return [...sections, ...entries, ...projs, ...actions, ...links];
+  }, [onGoto, onToggleTheme, theme, navigate, onClose]);
 
   const filtered = useMemo(() => {
     return items

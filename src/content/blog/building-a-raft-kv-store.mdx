@@ -1,0 +1,91 @@
+---
+title: "Building a Raft KV Store"
+description: "Three weeks chasing a liveness bug that only showed up under network partition."
+date: "2026-08-14"
+tags: ["distributed-systems", "go", "raft"]
+draft: false
+---
+
+I set out to write a Raft implementation because I wanted to understand the
+paper, not because the world needed another one. What I got instead was three
+weeks of staring at logs from a five-node cluster that would elect a leader,
+run happily for a few minutes, and then quietly stop making progress.
+
+## The symptom
+
+Under a clean run everything worked. The failure only appeared once I started
+partitioning nodes at random. The cluster would settle into a state where every
+node believed a leader existed, but no entries were being committed.
+
+| Node | Term | State     | Commit index |
+| ---- | ---- | --------- | ------------ |
+| n1   | 14   | leader    | 812          |
+| n2   | 14   | follower  | 812          |
+| n3   | 15   | candidate | 809          |
+| n4   | 15   | candidate | 809          |
+| n5   | 14   | follower  | 812          |
+
+Two nodes stuck as candidates in a higher term, three nodes happily following a
+leader from the previous one. Nobody was wrong, exactly. Everybody was stale.
+
+## The tick loop
+
+Here is the shape of the code that caused it:
+
+```go
+func (r *Raft) tick() {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	r.elapsed++
+	if r.state == Leader {
+		if r.elapsed >= r.heartbeatTimeout {
+			r.elapsed = 0
+			r.broadcastAppendEntries()
+		}
+		return
+	}
+	if r.elapsed >= r.electionTimeout {
+		r.elapsed = 0
+		r.becomeCandidate()
+	}
+}
+```
+
+The bug is not in this function. The bug is that `broadcastAppendEntries` sent
+RPCs while holding `r.mu`, and the RPC layer blocked on a partitioned peer. The
+leader's tick loop stalled, heartbeats stopped, and the two reachable followers
+timed out and started an election that they could never win — because the
+partition kept them from reaching a quorum.
+
+## The fix
+
+> Never hold a lock across a network call. It is the oldest advice in the book,
+> and I still had to rediscover it the hard way.
+
+The repair was to snapshot the state under the lock, release it, and only then
+talk to the network:
+
+```go
+func (r *Raft) broadcastAppendEntries() {
+	peers, term, entries := r.snapshotForReplication()
+	r.mu.Unlock()
+	defer r.mu.Lock()
+
+	for _, p := range peers {
+		go r.sendAppendEntries(p, term, entries)
+	}
+}
+```
+
+One line of real change. Three weeks to find it.
+
+## What I would do differently
+
+- Write the partition test *first*. The happy path proves nothing.
+- Log the full cluster state on every term change, not just on errors.
+- Treat any lock held for more than a millisecond as a bug worth explaining.
+
+If you want to read the paper that started all this, it is
+[In Search of an Understandable Consensus Algorithm](https://raft.github.io/raft.pdf),
+and it is genuinely as readable as it claims to be.

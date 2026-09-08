@@ -27,7 +27,8 @@ export const SECTIONS: SectionDef[] = [
   { id: "projects", file: "projects/", ext: "dir", label: "Projects", key: "3" },
   { id: "skills", file: "skills.toml", ext: "toml", label: "Skills", key: "4" },
   { id: "awards", file: "awards.md", ext: "md", label: "Awards", key: "5" },
-  { id: "contact", file: "contact.md", ext: "md", label: "Contact", key: "6" },
+  { id: "blog", file: "blog/", ext: "dir", label: "Blog", key: "6" },
+  { id: "contact", file: "contact.md", ext: "md", label: "Contact", key: "7" },
 ];
 
 export const SECTION_IDS = SECTIONS.map((s) => s.id);

@@ -1,4 +1,4 @@
-import { Menu, Search, Sun, Moon, Github, Linkedin } from "lucide-react";
+import { Menu, Search, Sun, Moon, Github, Linkedin, X } from "lucide-react";
 import { SECTIONS } from "@/lib/sections";
 import type { Theme } from "@/lib/useTheme";
 import { cn } from "@/lib/cn";
@@ -10,6 +10,8 @@ interface Props {
   onOpenPalette: () => void;
   theme: Theme;
   onToggleTheme: () => void;
+  /** An open post, shown as an extra buffer tab with a close control. */
+  openBuffer?: { file: string; onClose: () => void } | null;
 }
 
 export default function BufferTabs({
@@ -19,6 +21,7 @@ export default function BufferTabs({
   onOpenPalette,
   theme,
   onToggleTheme,
+  openBuffer,
 }: Props) {
   return (
     <div className="flex h-10 shrink-0 items-stretch border-b border-surface0 bg-crust text-sm">
@@ -59,6 +62,22 @@ export default function BufferTabs({
             </button>
           );
         })}
+
+        {/* The post currently open, as its own buffer. */}
+        {openBuffer && (
+          <div className="group relative flex shrink-0 items-center gap-2 border-r border-surface0 bg-base px-3.5 text-text">
+            <span className="absolute inset-x-0 top-0 h-0.5 bg-mauve" />
+            <span className="h-1.5 w-1.5 rounded-full bg-green" />
+            <span className="whitespace-nowrap">{openBuffer.file}</span>
+            <button
+              onClick={openBuffer.onClose}
+              aria-label="Close buffer"
+              className="text-overlay0 transition-colors hover:text-red"
+            >
+              <X className="h-3 w-3" />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Right-side controls */}

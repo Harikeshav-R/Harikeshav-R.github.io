@@ -207,3 +207,92 @@ body {
     transition-duration: 0.001ms !important;
   }
 }
+
+/*
+  Splash backdrop. Raised by the pre-paint script in index.html and removed
+  once <Splash /> mounts (or immediately when it won't run). Lives outside
+  #root so React never sees it and it can't cause a hydration mismatch.
+*/
+#splash-shim {
+  display: none;
+}
+html.splash-pending #splash-shim {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--color-base);
+}
+
+/*
+  Shiki emits Catppuccin Latte as inline colors and Mocha as --shiki-dark
+  custom properties. Latte-as-default is deliberate: the site always has an
+  explicit .light/.dark class before first paint, but RSS readers strip the
+  stylesheet and fall back to the inline colors — and those readers are light.
+*/
+.shiki {
+  overflow-x: auto;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--color-surface0);
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  line-height: 1.65;
+  tab-size: 2;
+}
+.shiki code {
+  display: block;
+  width: fit-content;
+  min-width: 100%;
+}
+.shiki .line {
+  display: block;
+  min-height: 1lh;
+}
+html.dark .shiki,
+html.dark .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+/*
+  Post prose. Each top-level block is wrapped in .mdx-block by
+  vite/rehypeSourceLines.ts, so adjacent-sibling rules can't be used — style
+  the blocks and their contents directly.
+*/
+.post-prose .mdx-block > :first-child {
+  margin-top: 0;
+}
+.post-prose .mdx-block:first-child > * {
+  margin-top: 0;
+}
+
+/* Inline code only: Shiki owns everything inside a <pre>. */
+.post-prose :not(pre) > code {
+  border: 1px solid color-mix(in oklab, var(--color-surface1) 60%, transparent);
+  background: color-mix(in oklab, var(--color-surface0) 50%, transparent);
+  border-radius: 0.25rem;
+  padding: 0.1rem 0.35rem;
+  font-size: 0.85em;
+  color: var(--color-peach);
+}
+
+/* rehype-autolink-headings wraps heading text in an anchor. */
+.post-prose h1 a,
+.post-prose h2 a,
+.post-prose h3 a,
+.post-prose h4 a {
+  color: inherit;
+  text-decoration: none;
+}
+.post-prose :is(h1, h2, h3, h4) a:hover {
+  text-decoration: underline;
+  text-decoration-color: color-mix(
+    in oklab,
+    var(--color-mauve) 50%,
+    transparent
+  );
+  text-underline-offset: 4px;
+}

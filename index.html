@@ -16,29 +16,40 @@
       gtag('config', 'G-P9FS5FKSH1');
     </script>
 
+    <!-- The prerender script swaps this whole block per route. -->
+    <!--seo-start-->
     <title>Harikeshav Rameshkumar — Systems & AI Engineer</title>
     <meta
       name="description"
       content="Harikeshav Rameshkumar — B.S. Computer Science @ The Ohio State University. Systems and AI/LLM engineer. GE Aerospace, Siage Solutions, IIT Madras. Builder of distributed inference engines, FHE ML runtimes, and agentic AI platforms."
     />
     <meta name="author" content="Harikeshav Rameshkumar" />
-
-    <!-- Open Graph / social -->
+    <link rel="canonical" href="https://harikeshav.me/" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Harikeshav Rameshkumar — Systems & AI Engineer" />
     <meta
       property="og:description"
       content="Systems and AI/LLM engineer. OSU CS. Building distributed inference engines, FHE ML runtimes, and agentic AI platforms."
     />
-    <meta property="og:url" content="https://harikeshav.me" />
+    <meta property="og:url" content="https://harikeshav.me/" />
     <meta name="twitter:card" content="summary" />
+    <!--seo-end-->
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Harikeshav Rameshkumar — blog"
+      href="/rss.xml"
+    />
 
     <script>
-      // Apply saved theme before paint to avoid a flash.
+      // Apply saved theme before paint to avoid a flash, and raise a flat
+      // backdrop if the splash is about to run. Pages are prerendered, so
+      // without the backdrop the real content would show for a frame first.
       (function () {
+        var root = document.documentElement;
         try {
           var t = localStorage.getItem("hk-theme");
-          var root = document.documentElement;
           if (t === "light") {
             root.classList.remove("dark");
             root.classList.add("light");
@@ -46,10 +57,30 @@
             root.classList.add("dark");
           }
         } catch (e) {}
+        try {
+          if (
+            location.pathname === "/" &&
+            sessionStorage.getItem("hk-splash-seen") !== "1"
+          ) {
+            root.classList.add("splash-pending");
+          }
+        } catch (e) {}
       })();
     </script>
+    <noscript>
+      <style>
+        /* Scroll-reveal starts at opacity 0; without JS it never animates in. */
+        [style*="opacity:0"],
+        [style*="opacity: 0"] {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      </style>
+    </noscript>
   </head>
   <body>
+    <!-- Outside #root, so React never sees it and it cannot mismatch. -->
+    <div id="splash-shim"></div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

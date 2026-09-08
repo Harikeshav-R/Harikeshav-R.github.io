@@ -1,0 +1,32 @@
+---
+title: "Notes on FHE Inference"
+description: "Rough working notes on running neural network inference under homomorphic encryption."
+date: "2026-09-20"
+tags: ["cryptography", "ml", "fhe"]
+draft: true
+---
+
+These are working notes, not a finished post. Publishing them to myself.
+
+## The bandwidth problem
+
+Ciphertext expansion is the whole story. A 32-bit float becomes kilobytes of
+ciphertext, and every multiplication grows the noise budget you have to manage.
+
+```python
+import tenseal as ts
+
+ctx = ts.context(ts.SCHEME_TYPE.CKKS, poly_modulus_degree=8192,
+                 coeff_mod_bit_sizes=[60, 40, 40, 60])
+ctx.global_scale = 2 ** 40
+ctx.generate_galois_keys()
+
+enc = ts.ckks_vector(ctx, [0.1, 0.2, 0.3])
+```
+
+## Open questions
+
+- How far can polynomial activation approximations go before accuracy collapses?
+- Is bootstrapping ever worth it for a network this shallow?
+
+Still thinking about it.

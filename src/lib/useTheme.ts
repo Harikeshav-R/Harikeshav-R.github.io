@@ -1,33 +1,56 @@
-import { useCallback, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 
 export type Theme = "dark" | "light";
 
 const KEY = "hk-theme";
 
-function current(): Theme {
-  if (typeof document === "undefined") return "dark";
+const listeners = new Set<() => void>();
+
+function emit() {
+  for (const l of listeners) l();
+}
+
+function subscribe(fn: () => void): () => void {
+  listeners.add(fn);
+  window.addEventListener("storage", fn);
+  return () => {
+    listeners.delete(fn);
+    window.removeEventListener("storage", fn);
+  };
+}
+
+function snapshot(): Theme {
   return document.documentElement.classList.contains("light") ? "light" : "dark";
 }
 
-/** Reads/writes the .light|.dark class on <html> and persists to localStorage. */
+/** Matches index.html's <html class="dark"> so prerendered markup lines up. */
+function serverSnapshot(): Theme {
+  return "dark";
+}
+
+export function setTheme(next: Theme) {
+  const root = document.documentElement;
+  root.classList.toggle("light", next === "light");
+  root.classList.toggle("dark", next === "dark");
+  try {
+    localStorage.setItem(KEY, next);
+  } catch {
+    /* ignore */
+  }
+  emit();
+}
+
+/**
+ * Reads/writes the .light|.dark class on <html> and persists to localStorage.
+ *
+ * useSyncExternalStore rather than useState: the pre-paint script in index.html
+ * may already have applied .light before hydration, so the server snapshot has
+ * to be declared separately or the statusline's "mocha"/"latte" mismatches.
+ */
 export function useTheme(): { theme: Theme; toggle: () => void } {
-  const [theme, setTheme] = useState<Theme>(current);
-
-  const apply = useCallback((next: Theme) => {
-    const root = document.documentElement;
-    root.classList.toggle("light", next === "light");
-    root.classList.toggle("dark", next === "dark");
-    try {
-      localStorage.setItem(KEY, next);
-    } catch {
-      /* ignore */
-    }
-    setTheme(next);
-  }, []);
-
+  const theme = useSyncExternalStore(subscribe, snapshot, serverSnapshot);
   const toggle = useCallback(() => {
-    apply(current() === "light" ? "dark" : "light");
-  }, [apply]);
-
+    setTheme(snapshot() === "light" ? "dark" : "light");
+  }, []);
   return { theme, toggle };
 }
