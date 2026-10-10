@@ -10,7 +10,7 @@ export const profile = {
   website: "harikeshav.me",
   // Short intro shown in the ASCII splash / hero.
   blurb:
-    "B.S. Computer Science @ The Ohio State University (3.9 GPA, May 2027). " +
+    "B.S. Computer Science @ The Ohio State University (3.9 GPA, May 2028). " +
     "I work across the stack — from hand-written SIMD kernels and FHE runtimes " +
     "to production LLM pipelines on AWS. Currently interning at GE Aerospace.",
   // Longer about-section prose.
@@ -25,7 +25,7 @@ export const education: Education = {
   school: "The Ohio State University",
   degree: "B.S. Computer Science",
   location: "Columbus, OH",
-  graduation: "May 2027",
+  graduation: "May 2028",
   gpa: "3.9 / 4.0",
   honors: ["Dean's List (all 4 semesters)", "University Honors (all 4 semesters)"],
   coursework: [
