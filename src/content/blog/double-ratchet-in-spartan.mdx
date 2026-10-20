@@ -1,0 +1,490 @@
+---
+title: "Why I used Double Ratchet in Spartan"
+description: "How Spartan's encryption state changes with each exchange, with a C# walkthrough and the limits of its Double Ratchet implementation."
+date: "2025-01-10"
+tags: ["cryptography", "csharp", "security"]
+draft: false
+---
+
+Spartan's controller sends a request, the agent sends a response, and that exchange repeats for as long as the connection stays open. Encrypting all of it with one session key would make the code simpler. It would also mean that leaking that encryption key exposes every recorded message encrypted under it.
+
+I used the Double Ratchet structure because I wanted to work with shorter-lived message keys and see how fresh Diffie-Hellman exchanges could renew the encryption state. Getting two messages to decrypt is fairly easy. Keeping track of what a leaked secret lets someone read takes more thought.
+
+This is a walkthrough of the code in [Spartan](https://github.com/Harikeshav-R/Spartan), followed by a C# tutorial using its existing encryption classes. For the example, I'll use a lab controller and a field probe exchanging sensor readings. They stand in for the server and agent; Spartan doesn't have a sensor feature. The demo runs in one process, without a listener, payload loading, or command execution.
+
+> Spartan is an educational proof-of-concept C2 framework for authorized research. This is not an audited Signal implementation. Its current transport uses AES-CBC without message authentication, and it retains secrets that a production ratchet would need to delete. I wouldn't use this channel to protect real secrets. The point of the tutorial is to understand the state changes, including where this implementation falls short.
+
+Nikos Filippakis's [Implementing Signal's Double Ratchet algorithm](https://nfil.dev/coding/encryption/python/double-ratchet-example/) was the starting point for this article. Rather than translate the Python, I've used Spartan's C# implementation and checked it against the [Double Ratchet](https://signal.org/docs/specifications/doubleratchet/) and [X3DH](https://signal.org/docs/specifications/x3dh/) specifications.
+
+## Why a ratchet?
+
+A single connection can carry a lot of requests and responses. I'd rather an isolated message-key leak didn't expose the whole conversation.
+
+A ratchet derives a message key and advances its internal state. If someone learns only a later chain state, they shouldn't be able to calculate earlier message keys. That argument depends on the older secrets being gone. Keeping a copy of the initial seed defeats the point for anything that can still be derived from it.
+
+There is a catch: someone who steals the current chain state can follow the derivation forward. Generating another message key from that state doesn't make the attacker lose access. The DH ratchet adds fresh shared secret material to renew the chains, so a past state compromise need not expose every future message too.
+
+Those are separate compromise cases. A message key isn't a chain key, and a chain key isn't the endpoint's entire memory. I'll keep that distinction throughout, because Spartan demonstrates the mechanics without meeting all the conditions behind their security guarantees.
+
+### Where TLS fits
+
+Authenticated TLS would be a sensible way to protect a live TCP connection. Choosing a ratchet here isn't an argument that a custom channel is safer.
+
+What interests me about application-level ratcheting is that message-key lifetime becomes part of the application's state machine. The same idea is useful in messaging protocols where a conversation outlives a transport connection. Spartan doesn't implement an asynchronous mailbox or persistent ratchet sessions, though. Its current exchange is a synchronous request followed by a response.
+
+For this project, ratcheting is a way to study that state machine. It doesn't excuse missing authentication or a custom record format.
+
+## The code we're using
+
+The encryption classes are small. Most of the work sits in three files, with the socket wrappers calling into them:
+
+| Source | What it does |
+| --- | --- |
+| [`SymmetricRatchet.cs`](https://github.com/Harikeshav-R/Spartan/blob/d8f739ae55afd399a26e15a7f578693dbe51c5e4/Spartan.Encryption/SymmetricRatchet.cs#L15-L24) | Advances a KDF chain and returns an AES key and IV. |
+| [`ClientRatchet.cs`](https://github.com/Harikeshav-R/Spartan/blob/d8f739ae55afd399a26e15a7f578693dbe51c5e4/Spartan.Encryption/ClientRatchet.cs#L17-L95) | Owns the agent's bootstrap keys and ratchet state. |
+| [`ServerRatchet.cs`](https://github.com/Harikeshav-R/Spartan/blob/d8f739ae55afd399a26e15a7f578693dbe51c5e4/Spartan.Encryption/ServerRatchet.cs#L18-L94) | Owns the controller's corresponding keys and state. |
+| [`SocketServer.cs`](https://github.com/Harikeshav-R/Spartan/blob/d8f739ae55afd399a26e15a7f578693dbe51c5e4/Spartan.Server/SocketServer.cs#L49-L196) | Handles the controller's handshake, serialization, and encrypted chunks. |
+| [`SocketClient.cs`](https://github.com/Harikeshav-R/Spartan/blob/d8f739ae55afd399a26e15a7f578693dbe51c5e4/Spartan.Payload/SocketClient.cs#L30-L178) | Handles the agent's side of that transport. |
+| [`Shell.cs`](https://github.com/Harikeshav-R/Spartan/blob/d8f739ae55afd399a26e15a7f578693dbe51c5e4/Spartan.Server/Shell.cs#L19-L36) and [`Stager.cs`](https://github.com/Harikeshav-R/Spartan/blob/d8f739ae55afd399a26e15a7f578693dbe51c5e4/Spartan.Payload/Stager.cs#L10-L27) | Establish the controller-first request/response order. |
+
+`ClientRatchet` belongs to the running agent in `Spartan.Payload`. It isn't the initial loader project, `Spartan.Client`. The names are easy to mix up.
+
+The encryption project targets .NET 9 and uses `System.Security.Cryptography`. There isn't a third-party cryptography dependency to install.
+
+## A chain that moves one way
+
+Start with a secret state. Each call to the symmetric ratchet derives 80 bytes and splits them:
+
+```text
+output = HKDF-SHA256(state || input, 80 bytes)
+
+next state = output[0..32)
+AES key    = output[32..64)
+AES IV     = output[64..80)
+```
+
+`||` means concatenation. These are half-open ranges, so the first slice is 32 bytes. The AES key is also 32 bytes, giving AES-256, while the 16-byte IV matches AES's block size.
+
+Here is `SymmetricRatchet.Next` as it appears in Spartan:
+
+```csharp
+public (byte[], byte[]) Next(byte[]? input = null)
+{
+    var combined = new byte[_state.Length + (input?.Length ?? 0)];
+
+    Buffer.BlockCopy(_state, 0, combined, 0, _state.Length);
+    if (input != null) Buffer.BlockCopy(input, 0, combined, _state.Length, input.Length);
+
+    var output = Hkdf(combined, 80);
+    _state = output[..32];
+    return (output[32..64], output[64..]);
+}
+```
+
+Its private helper calls:
+
+```csharp
+return HKDF.DeriveKey(HashAlgorithmName.SHA256, input, length);
+```
+
+These are excerpts to read, not extra code to paste into the demo project. The tutorial references the existing library.
+
+[`HKDF.DeriveKey`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.hkdf.derivekey?view=net-9.0) performs HKDF's extract and expand operations. Spartan supplies neither an explicit salt nor an application-specific `info` value.
+
+Give two ratchets the same state and input, and they'll produce matching output. That is how the probe's sending chain stays in sync with the controller's receiving chain.
+
+Under the KDF's assumptions, recovering earlier message keys from a later state should be computationally infeasible. Predicting later outputs from the current state is easy, though: call `Next` again. Without fresh secret input, an attacker with the state can do exactly what the endpoint does.
+
+## Three chains in each endpoint
+
+Each side keeps a root chain, a sending chain, and a receiving chain. The sending chain produces local encryption keys; the receiving chain produces the peer's matching decryption keys. Separate directions keep the two sides from consuming the same chain output for unrelated outbound messages.
+
+The root chain takes the initial shared secret and later DH-derived input. Its output seeds the directional chains; it doesn't encrypt application messages itself.
+
+Spartan uses the same `SymmetricRatchet` class for all three jobs. At the root level it takes only `.Item1`, the middle 32-byte slice of the 80-byte output, as a chain seed. The IV output is unused there.
+
+The standard separates root-key derivation from message-chain derivation. Its [recommended algorithms](https://signal.org/docs/specifications/doubleratchet/#recommended-cryptographic-algorithms) specify KDF roles and domain separation. Spartan's `HKDF(state || input)` construction is a compact teaching implementation, not a byte-for-byte implementation of those recommendations.
+
+## Agreeing on the initial secret
+
+Before the chains can match, the controller and probe need a shared starting secret. Both ratchet classes call this operation `X3dh`.
+
+The calculation resembles the four-DH form of X3DH. The surrounding protocol is simplified enough that I'll call it an X3DH-style bootstrap rather than X3DH proper.
+
+The public-key property names come directly from the code:
+
+| Participant | Property | Intended role |
+| --- | --- | --- |
+| Probe | `ClientRatchet.IKaPublicKey` | Identity-style key. |
+| Probe | `ClientRatchet.EKaPublicKey` | Bootstrap ephemeral-style key. |
+| Controller | `ServerRatchet.IKbPublicKey` | Identity-style key. |
+| Controller | `ServerRatchet.SPKbPublicKey` | Signed-prekey-style key. |
+| Controller | `ServerRatchet.OPKbPublicKey` | One-time-prekey-style key. |
+| Either | `DhRatchetPublicKey` | Current messaging-ratchet key, separate from the bootstrap keys. |
+
+The suffixes are existing identifiers, not the names of our participants.
+
+The constructors create new P-256 keys for each object. There is no persistent identity enrollment, published prekey bundle, signature over `SPKb`, or service that consumes and deletes one-time prekeys. The names describe their intended roles, not a complete implementation of their lifecycles.
+
+### Four DH calculations
+
+Let `D(privateKey, publicKey)` stand for Spartan's `ECDiffieHellman.DeriveKeyMaterial` call. The probe calculates:
+
+```text
+D1 = D(probe identity private key,  controller prekey public key)
+D2 = D(probe ephemeral private key, controller identity public key)
+D3 = D(probe ephemeral private key, controller prekey public key)
+D4 = D(probe ephemeral private key, controller one-time public key)
+
+sharedKey = HKDF-SHA256(D1 || D2 || D3 || D4, 32 bytes)
+```
+
+The controller calculates the same pairs using its private keys and the probe's public keys. ECDH agreement gives both sides matching material.
+
+The probe's four calls in `ClientRatchet.X3dh` are:
+
+```csharp
+var dh1 = _ika.DeriveKeyMaterial(otherSPKb.PublicKey);
+var dh2 = _eka.DeriveKeyMaterial(otherIKb.PublicKey);
+var dh3 = _eka.DeriveKeyMaterial(otherSPKb.PublicKey);
+var dh4 = _eka.DeriveKeyMaterial(otherOPKb.PublicKey);
+```
+
+The method concatenates these results and runs HKDF to obtain the 32-byte `_sharedKey`. `ServerRatchet.X3dh` mirrors the calculation.
+
+One .NET detail matters here: `DeriveKeyMaterial` doesn't promise raw ECDH output. Microsoft's [API documentation](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.ecdiffiehellman.derivekeymaterial?view=net-9.0) says the default behavior is equivalent to `DeriveKeyFromHash` with SHA-256 and no prepend or append values. An X25519 exchange API that returns raw agreement bytes isn't interchangeable with this call.
+
+### Matching secrets don't identify the peer
+
+The public keys can travel in the clear. What matters is knowing whose keys they are.
+
+The [X3DH specification](https://signal.org/docs/specifications/x3dh/#sending-the-initial-message) requires verification of the signed prekey and defines associated data containing identity information. Identity keys also need verification through an authenticated channel or equivalent mechanism. Without that, the specification gives no guarantee about who you're talking to.
+
+Spartan doesn't implement those checks. An active intermediary can replace the public keys and establish separate secrets with the two endpoints. Successfully deriving four DH results doesn't stop that attack.
+
+X3DH also specifies different curves, encoding, domain separation, and prekey handling from this P-256 implementation. Those differences are why the qualification matters.
+
+## The controller has to send first
+
+This detail is easy to miss if you follow a generic Double Ratchet tutorial instead of the actual classes.
+
+After deriving `_sharedKey`, both endpoints call `InitializeRatchet()`. Each advances the root twice. They assign the outputs in opposite directions:
+
+| Root output | Controller | Probe |
+| --- | --- | --- |
+| First 32-byte output key | Sending chain | Receiving chain |
+| Second 32-byte output key | Receiving chain | Sending chain |
+
+After those two calls, the roots have matching state and the directional chains match their peers.
+
+`ServerRatchet` already has a messaging DH pair, created in its constructor. The probe's `_dhRatchet` is still `null`.
+
+On the probe's first receive, `ClientRatchet.DhRatchet` keeps the initialized receiving chain. It creates the probe's first DH pair and derives a new sending chain. The incoming controller message decrypts with the old, initialized receiving chain; the reply uses the new DH-derived sending chain.
+
+The first exchanges go like this:
+
+1. The controller sends an encrypted request with its current public ratchet key.
+2. The probe keeps its initial receiving chain, creates a DH pair, and prepares a new sending chain.
+3. The probe sends its encrypted reading with its public ratchet key.
+4. The controller derives a matching receiving chain, then replaces its DH pair and prepares its next sending chain.
+5. The controller's next request carries its new public key. The probe can now replace both directional chains through the normal DH step.
+
+That is the order in `Shell.ExecuteShell` and `Stager.Run`: send a request, receive a response. The bootstrap handshake has the opposite first sender, because the payload sends its public bootstrap keys first. These are separate parts of startup.
+
+If the probe tries to send an encrypted application message immediately after initialization, `DhRatchetPublicKey` returns an empty array. The server's encrypted receive path expects a public ratchet key, so that isn't a supported starting order.
+
+## Renewing the chains with DH
+
+Once the probe has a DH pair, each incoming turn can prepare both a receiving chain and a sending chain.
+
+`ServerRatchet.DhRatchet` first combines the controller's current private ratchet key with the incoming probe public key. It feeds the result into the root and uses the output to seed a receiving chain. This reproduces the material the probe used to send its message.
+
+The controller then generates a new DH pair. It combines the new private key with the same probe public key and advances the root again. That output seeds its next sending chain. Its next message advertises the new public key, letting the probe calculate the corresponding result.
+
+The symmetric chain produces each message key. The DH step renews the chains themselves. Together, those are the two ratchets.
+
+### Recovery takes uncompromised secrets
+
+A stolen chain state exposes future outputs from that chain until fresh secret input changes what the attacker can calculate.
+
+Stealing a current DH private key can extend that access. The peer's next public key alone may not be enough to recover security, since the attacker can combine it with the stolen private key. Recovery needs subsequent DH contributions whose private material the attacker doesn't know.
+
+The attacker also has to lose access to the endpoint. Someone who can still read memory can keep collecting new keys and plaintext. There isn't a fixed promise that the next packet becomes safe. The specification's [recovery-from-compromise discussion](https://signal.org/docs/specifications/doubleratchet/#recovery-from-compromise) covers these limits.
+
+### The alternating-turn assumption
+
+The standard performs a DH step when the incoming public ratchet key is new. A sender can send several messages along one DH chain while advancing only the symmetric chain.
+
+Spartan's `ReceiveRotate()` always calls `DhRatchet()`. It doesn't save the remote public key and compare it before rotating.
+
+For an alternating request/response loop, both sides take compatible turns. Send two controller messages without waiting for a reply and they diverge: the controller advances its sending chain, while the probe takes an extra DH/root step on the second receive. Their message keys no longer match.
+
+TCP preserves byte order within a connection. It can't repair an application state machine that takes different transitions on each side.
+
+## A runnable C# example
+
+The demo uses the real `ServerRatchet` and `ClientRatchet` classes. It exchanges their public bootstrap keys, initializes them, and sends four alternating sensor messages. A separate session checks the repeated-send limitation without damaging the first session.
+
+It skips MessagePack and sockets. Each call encrypts one complete UTF-8 message, so we can check the ratchet independently of the transport code.
+
+> Keep this demo local. It uses Spartan's unauthenticated CBC design. The sender/receiver key comparisons are in-process diagnostics, not a substitute for authentication on the wire.
+
+### 1. Create a console project
+
+You need a checkout of [Spartan](https://github.com/Harikeshav-R/Spartan) and a .NET 9 or newer SDK. The console project references the existing `net9.0` library.
+
+*Tutorial update, 20 October 2026: I rechecked this example with the .NET 10 SDK and runtime against the source snapshot linked above. The references include the current Double Ratchet specification; its later post-quantum additions aren't implemented here.*
+
+From the Spartan repository root, run this in a POSIX shell:
+
+```bash
+spartan="$PWD"
+demo="$(mktemp -d "${TMPDIR:-/tmp}/spartan-ratchet-demo.XXXXXX")"
+
+dotnet new console --name Spartan.RatchetDemo --output "$demo"
+dotnet add "$demo/Spartan.RatchetDemo.csproj" reference \
+  "$spartan/Spartan.Encryption/Spartan.Encryption.csproj"
+
+printf 'Edit this file: %s/Program.cs\n' "$demo"
+```
+
+Keep the shell open so `$demo` remains set. The project stays outside the repository, and the reference builds Spartan's actual encryption code. You don't need a NuGet cryptography package.
+
+### 2. Replace `Program.cs`
+
+Paste this complete program into the generated file:
+
+```csharp
+using System.Security.Cryptography;
+using System.Text;
+using Spartan.Encryption;
+
+var (controller, probe) = CreateSession();
+
+Deliver("controller -> probe", "Report lab sensor status.",
+    controller.DhRatchetPublicKey, controller.SendRotate, probe.ReceiveRotate);
+Deliver("probe -> controller", "Sensor online; temperature 21 C.",
+    probe.DhRatchetPublicKey, probe.SendRotate, controller.ReceiveRotate);
+Deliver("controller -> probe", "Confirm next sample interval.",
+    controller.DhRatchetPublicKey, controller.SendRotate, probe.ReceiveRotate);
+Deliver("probe -> controller", "Next sample in 30 seconds.",
+    probe.DhRatchetPublicKey, probe.SendRotate, controller.ReceiveRotate);
+
+Console.WriteLine("Four alternating messages decrypted; all key/IV pairs matched.");
+
+// Use a separate session so this negative check cannot damage the main session.
+var (burstController, burstProbe) = CreateSession();
+Deliver("burst setup", "First controller message.",
+    burstController.DhRatchetPublicKey,
+    burstController.SendRotate, burstProbe.ReceiveRotate);
+
+var secondSend = burstController.SendRotate();
+var secondReceive = burstProbe.ReceiveRotate(burstController.DhRatchetPublicKey);
+try
+{
+    var match = SameMaterial(secondSend, secondReceive);
+    Console.WriteLine($"Second controller message without a reply matches: {match}");
+    if (match)
+        throw new InvalidOperationException("Expected the current burst limitation.");
+}
+finally
+{
+    Clear(secondSend);
+    Clear(secondReceive);
+}
+
+static (ServerRatchet Controller, ClientRatchet Probe) CreateSession()
+{
+    var controller = new ServerRatchet();
+    var probe = new ClientRatchet();
+
+    // Public keys cross the boundary; private keys remain inside each object.
+    controller.X3dh(probe.IKaPublicKey, probe.EKaPublicKey);
+    probe.X3dh(controller.SPKbPublicKey,
+        controller.IKbPublicKey, controller.OPKbPublicKey);
+
+    controller.InitializeRatchet();
+    probe.InitializeRatchet();
+    return (controller, probe);
+}
+
+static void Deliver(
+    string direction,
+    string message,
+    byte[] senderPublicKey,
+    Func<(byte[], byte[])> sendRotate,
+    Func<byte[], (byte[], byte[])> receiveRotate)
+{
+    var send = sendRotate();
+    try
+    {
+        using var aes = Aes.Create();
+        aes.Key = send.Item1;
+        var ciphertext = aes.EncryptCbc(
+            Encoding.UTF8.GetBytes(message), send.Item2, PaddingMode.PKCS7);
+
+        // Only ciphertext and the public key belong in the message envelope.
+        var receive = receiveRotate(senderPublicKey);
+        try
+        {
+            // This in-process diagnostic is not wire authentication.
+            if (!SameMaterial(send, receive))
+                throw new CryptographicException("Ratchet key/IV mismatch.");
+
+            aes.Key = receive.Item1;
+            var plaintext = Encoding.UTF8.GetString(aes.DecryptCbc(
+                ciphertext, receive.Item2, PaddingMode.PKCS7));
+            if (plaintext != message)
+                throw new InvalidOperationException("Plaintext round trip failed.");
+
+            Console.WriteLine($"{direction}: {plaintext}");
+        }
+        finally
+        {
+            Clear(receive);
+        }
+    }
+    finally
+    {
+        Clear(send);
+    }
+}
+
+static bool SameMaterial((byte[], byte[]) left, (byte[], byte[]) right) =>
+    CryptographicOperations.FixedTimeEquals(left.Item1, right.Item1) &&
+    CryptographicOperations.FixedTimeEquals(left.Item2, right.Item2);
+
+static void Clear((byte[], byte[]) material)
+{
+    CryptographicOperations.ZeroMemory(material.Item1);
+    CryptographicOperations.ZeroMemory(material.Item2);
+}
+```
+
+### 3. Run it
+
+In the same shell:
+
+```bash
+dotnet run --project "$demo/Spartan.RatchetDemo.csproj"
+```
+
+The application prints:
+
+```text
+controller -> probe: Report lab sensor status.
+probe -> controller: Sensor online; temperature 21 C.
+controller -> probe: Confirm next sample interval.
+probe -> controller: Next sample in 30 seconds.
+Four alternating messages decrypted; all key/IV pairs matched.
+burst setup: First controller message.
+Second controller message without a reply matches: False
+```
+
+The library's existing nullable-initialization warnings may appear during the first build. They aren't part of the application output above.
+
+Keys and ciphertext change on every run. The transcript doesn't, because the program checks each decrypted message before printing it. It never logs private keys, chain states, or message keys.
+
+### Reading the result
+
+`CreateSession()` uses both bootstrap methods and initializes both roots. It doesn't peek into private fields or inject a shared secret chosen by the harness.
+
+`Deliver()` derives the sender's material, encrypts, and passes the public ratchet key to the receiver. The receiver derives its own material. The harness checks both the key/IV pair and the recovered text.
+
+Comparing those secrets works here because both objects live in one process. On a real network, sending the keys across to compare them would destroy confidentiality. The check tells us the state machines agree; it doesn't authenticate a remote message.
+
+The final `False` is expected. It shows the second consecutive controller send producing material that doesn't match the probe's second receive. Comparing the material directly avoids relying on whether decryption happens to fail its CBC padding check.
+
+The `finally` blocks clear the returned key and IV arrays. They don't erase retained secrets inside the ratchet objects or dispose their internal DH keys. Clearing a few arrays in a harness doesn't establish secure deletion across a managed process.
+
+This verifies the encryption-class exchange, not the full framework. It doesn't exercise loading, serialization, chunk transport, or resistance to an attacker.
+
+## What the socket wrappers add
+
+In Spartan, both `SendData` methods serialize the object into a MessagePack `DataWrapper`, which holds its type name and serialized bytes. The encrypted path calls `SendRotate()` once for the logical message and writes this envelope:
+
+```text
+Int32 public-key length
+public ratchet key bytes (SubjectPublicKeyInfo)
+Int32 encrypted-chunk length
+ encrypted-chunk bytes
+... additional length-prefixed encrypted chunks ...
+Int32 zero terminator
+```
+
+`BinaryWriter` writes the integers; `BinaryReader.ReadInt32` reads them. The receiver reads the public-key header, calls `ReceiveRotate()` once, and uses the resulting key and IV to decrypt the chunks.
+
+There are no message numbers or previous-chain-length counters in that envelope. A MAC or AEAD tag doesn't protect the header either. The public key itself isn't secret, but its integrity still matters.
+
+### Chunks aren't separate ratchet messages
+
+The send loops use an 8,192-byte buffer. They rotate the key once per `SendData()` call, not once per chunk.
+
+They also pass `buffer.Length` into `TransformFinalBlock` instead of the actual number of bytes read, and reuse the transform across chunk finalizations. That isn't a well-defined authenticated streaming record format. Arbitrary-size serialized transfers need separate correctness work.
+
+The demo encrypts one complete message per call. It avoids those chunk-handling issues rather than testing or fixing them.
+
+### Staging happens before encryption
+
+`Shell.ExecuteShell` sends the assembly payload with `SendData(payload, false)` before the key agreement and ratchet initialization.
+
+Later encryption can't protect or authenticate assembly bytes that were already delivered and loaded. The trustworthiness of that initial code is part of the channel's security, even if the application prints that the connection is now encrypted.
+
+## The parts I wouldn't call secure yet
+
+The demo recovers the expected plaintext. That tells us much less than a protocol security claim.
+
+### CBC needs authentication
+
+Spartan sets a 32-byte AES key and 16-byte IV and uses the default CBC/PKCS7 behavior. It never computes or verifies a message authentication tag.
+
+CBC is malleable. Valid padding doesn't prove that a ciphertext came from the intended sender. If the surrounding errors reveal whether padding was valid, unauthenticated CBC can also create a padding oracle. I haven't demonstrated such an oracle here.
+
+A production version needs an authenticated construction and a specification for its nonces, header encoding, session context, and failure behavior. Swapping one AES call for another isn't the whole repair. The Double Ratchet specification defines its encryption and decryption functions using [AEAD](https://signal.org/docs/specifications/doubleratchet/#dr-external-functions), not bare CBC; the header and relevant context belong in authenticated associated data.
+
+### Old secrets still exist
+
+`SymmetricRatchet` replaces the `_state` reference without clearing the previous array. Both endpoint classes retain `_sharedKey` and their bootstrap key objects. Replacing a DH ratchet object doesn't explicitly dispose the old object at rotation time either.
+
+The retained `_sharedKey` is enough to reconstruct the initial root outputs and the initial controller-to-probe chain. A one-way derivation doesn't help if someone can still read the earlier seed. Fresh DH input changes what that seed alone can reveal, but it doesn't erase it.
+
+A process-memory compromise can therefore expose much more than the latest chain state. Forward secrecy needs a deliberate secret-lifecycle policy. Garbage collection and assigning a new array aren't that policy.
+
+### Recovery assumes the attacker leaves
+
+Fresh DH secrets can eventually make a stolen state insufficient to follow the conversation. An attacker who still controls the endpoint can keep reading plaintext and fresh keys, or interfere with future key generation. The unauthenticated bootstrap also leaves active impersonation unresolved.
+
+I'd describe recovery as the design goal here, conditional on fresh uncompromised DH material and the loss of attacker access. I wouldn't claim this proof of concept establishes it.
+
+### TCP doesn't manage ratchet state
+
+The standard's [out-of-order handling](https://signal.org/docs/specifications/doubleratchet/#out-of-order-messages) uses message numbers, previous-chain lengths, and a store of skipped message keys. Spartan implements none of those.
+
+Ordered delivery within a live TCP connection doesn't give the application replay detection, reconnect persistence, concurrent send support, or recovery after a failed transition.
+
+Spartan also advances receive state before CBC decryption succeeds and doesn't roll back those changes on failure. The standard discards tentative state changes when processing fails. A malformed message shouldn't permanently desynchronize a production session.
+
+### This isn't the full Signal protocol
+
+The implementation uses P-256 ECDH, HKDF-SHA256, and AES-CBC. It doesn't implement Signal interoperability, X3DH's complete identity and prekey lifecycle, header encryption, or the post-quantum additions in later versions of the specification.
+
+Deniability, anonymity, resistance to traffic analysis, and endpoint security are separate questions too. A ratchet alone doesn't establish them.
+
+## What I take from this implementation
+
+The controller-first initialization is the detail I'd check first when adapting the tutorial. Then I'd try a second send without a reply. Those two cases explain more about Spartan's actual protocol than a successful single round trip does.
+
+The code also draws a useful boundary between message keys and chain state. An isolated message-key leak should affect a much smaller set of messages than a stolen chain state. Fresh DH input can renew that state, but only after the attacker stops learning the new secrets. Neither mechanism helps with old keys that are still sitting in memory.
+
+I like having a small implementation where those dependencies are visible. I wouldn't mistake its size for a complete security argument. For Spartan, the next work would be authentication, secret deletion, correct transport records, and receive-state failure handling before trusting the channel with anything beyond a lab exchange.
+
+## References
+
+- Nikos Filippakis, [Implementing Signal's Double Ratchet algorithm](https://nfil.dev/coding/encryption/python/double-ratchet-example/), the original Python walkthrough that inspired this article.
+- Signal, [The Double Ratchet Algorithm](https://signal.org/docs/specifications/doubleratchet/), including the classical DH/symmetric ratchet discussed here and later extensions.
+- Signal, [The X3DH Key Agreement Protocol](https://signal.org/docs/specifications/x3dh/), for identity verification, prekey signatures, associated data, and deletion requirements.
+- IETF, [RFC 5869](https://www.rfc-editor.org/rfc/rfc5869), for HKDF and its salt and `info` parameters.
+- Microsoft, [`HKDF.DeriveKey`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.hkdf.derivekey?view=net-9.0) and [`ECDiffieHellman.DeriveKeyMaterial`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.ecdiffiehellman.derivekeymaterial?view=net-9.0).
+- Microsoft, [`SymmetricAlgorithm.EncryptCbc`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.symmetricalgorithm.encryptcbc?view=net-9.0), [`DecryptCbc`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.symmetricalgorithm.decryptcbc?view=net-9.0), and [`CryptographicOperations.ZeroMemory`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.cryptographicoperations.zeromemory?view=net-9.0).
+
+The source links above point to the repository snapshot used for the walkthrough, so later code changes won't move the explanation onto a different implementation.
