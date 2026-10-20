@@ -104,7 +104,11 @@ export default function CommandPalette({
       label: s.label,
       hint: s.value,
       kind: "link",
-      run: () => window.open(s.href, s.href.startsWith("http") ? "_blank" : "_self"),
+      run: () =>
+        window.open(
+          s.href,
+          s.href.startsWith("http") || s.href.endsWith(".pdf") ? "_blank" : "_self",
+        ),
     }));
     const actions: Item[] = [
       {

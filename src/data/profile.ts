@@ -64,9 +64,15 @@ export const socials: SocialLink[] = [
     icon: "mail",
   },
   {
-    label: "Resume",
-    value: "Resume.pdf",
-    href: "/Resume.pdf",
+    label: "Research Resume",
+    value: "Resume-Research.pdf",
+    href: "/Resume-Research.pdf",
+    icon: "file",
+  },
+  {
+    label: "Corporate Resume",
+    value: "Resume-Corporate.pdf",
+    href: "/Resume-Corporate.pdf",
     icon: "file",
   },
 ];

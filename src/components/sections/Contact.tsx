@@ -24,11 +24,6 @@ const ICONS: Record<SocialLink["icon"], ComponentType<{ className?: string }>> =
   globe: Globe,
 };
 
-/** External links open in a new tab; mailto + local files navigate normally. */
-function isExternal(href: string): boolean {
-  return href.startsWith("http://") || href.startsWith("https://");
-}
-
 /** Three faux window dots for the terminal chrome bar. */
 function WindowDots() {
   return (
@@ -73,7 +68,10 @@ function CopyEmailButton() {
 /** A single contact link rendered as a terminal output row. */
 function ContactRow({ social }: { social: SocialLink }) {
   const Icon = ICONS[social.icon];
-  const external = isExternal(social.href);
+  const external =
+    social.href.startsWith("http://") ||
+    social.href.startsWith("https://") ||
+    social.href.endsWith(".pdf");
   const isEmail = social.icon === "mail";
 
   return (
